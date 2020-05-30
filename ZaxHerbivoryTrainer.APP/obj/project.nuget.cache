@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "oogi96wvL7QsNbwqj/PF9XCazWOMY+h+FERrOImYjHoRluIWCku3CTUTctFoMe0XApmj/AdO0BQI2NZ9QyCe6A==",
+  "dgSpecHash": "3RQgQJrO5r5TS4AFHBhtwNEXbOL16ifYeIaaSu+DDLmhrHitcd7mxZVI0IPvnPsFmCoGlJNUed+8/kJVSuOJRA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj",
+  "projectFilePath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sam-Commtract\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Users\\Sam-Commtract\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\7.0.0\\automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",

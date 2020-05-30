@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WbYxIpnV4QFxJuLWCp5hw2y4tsROQYsZ1DXnxBkQGR4xFq+9qNIuyzbRho2lzddoZsvEiqosFRfpZ0/L/6UN3A==",
+  "dgSpecHash": "CxsYho967FOGnw4xIzVjsG16wOijJ8I0v8aIrQP6vn5sUrN6dI6+7MMm1UXOijLrGJhBseiBupq7cDAUVfjKcg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj",
+  "projectFilePath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sam-Commtract\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Users\\Sam-Commtract\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\7.0.0\\automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",

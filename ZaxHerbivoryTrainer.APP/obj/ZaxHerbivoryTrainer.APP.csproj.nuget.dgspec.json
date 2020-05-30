@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj": {}
+    "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj": {
+    "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj",
+        "projectUniqueName": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj",
         "projectName": "ZaxHerbivoryTrainer.API",
-        "projectPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj",
+        "projectPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj",
         "packagesPath": "C:\\Users\\Sam-Commtract\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.API\\obj\\",
+        "outputPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -128,14 +128,14 @@
         }
       }
     },
-    "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj": {
+    "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj",
+        "projectUniqueName": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj",
         "projectName": "ZaxHerbivoryTrainer.APP",
-        "projectPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj",
+        "projectPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.APP\\ZaxHerbivoryTrainer.APP.csproj",
         "packagesPath": "C:\\Users\\Sam-Commtract\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.APP\\obj\\",
+        "outputPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.APP\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -156,8 +156,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj": {
-                "projectPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainer\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj"
+              "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj": {
+                "projectPath": "C:\\Users\\Sam-Commtract\\source\\repos\\ZaxHerbivoryTrainerApp\\ZaxHerbivoryTrainer.API\\ZaxHerbivoryTrainer.API.csproj"
               }
             }
           }
