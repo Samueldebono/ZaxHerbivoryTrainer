@@ -1,0 +1,120 @@
+﻿
+@model StartModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<script type="text/javascript">
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    var moreInformationDialog;
+    $(document).ready(function () {
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'myButton',
+                cancelButton: 'myButton-2'
+
+            },
+            buttonsStyling: false
+        });
+
+
+        var hash = getCookie("userHash");
+        $("#hash-obj").val(hash);
+
+        if (hash !== "" && hash !== "null") {
+            swalWithBootstrapButtons.fire({
+                html: "Would you like to continue where you left off?",
+                showCloseButton: false,
+                allowOutsideClick: false,
+                showCancelButton: true,
+                confirmButtonText: 'Continue',
+                cancelButtonText: 'No'
+
+            }).then((result) => {
+                if (result.value) {
+                    $("#hash-obj").val(hash);
+                    $("#continue-obj").val(true);
+                }
+                else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    $("#hash-obj").val("");
+                    $("#continue-obj").val(false);
+                }
+            });
+        }
+
+        moreInformationDialog = $("#instructionModal").dialog({
+            autoOpen: false,
+            position: ['top', 50],
+            resizable: false,
+            width: '100%',
+            modal: true
+
+        });
+        $('.ui-button').button().hide();
+
+        $("#btnInstructions").click(function () {
+
+            if ($('#instructionModal').dialog('isOpen')) {
+                $("#instructionModal").dialog('close');
+                $('.ui-button').button().hide();
+                $('.ui-dialog').css("outline", "none");
+            } else {
+                $("#instructionModal").dialog('open');
+                $('.ui-button').button().hide();
+                $('.ui-dialog').css("outline", "none");
+            }
+        });
+
+    });
+
+
+
+</script>
+@using (Html.BeginForm("Start", "Home", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Hash, new { id = "hash-obj" })
+    @Html.HiddenFor(m => m.Continue, new { id = "continue-obj" })
+
+    <div id="Header">
+        <div class="wrapper">
+            <span class="header-home">ZAX Herbivory Trainer</span>
+        </div>
+    </div>
+
+    <div class="center">
+        <div class="btn-1">
+            <a id="btnInstructions"><span>Instructions</span></a>
+        </div>
+        <div class="btn-2" type="submit">
+            <input type="submit" value="Let's Begin" />
+        </div>
+    </div>
+
+    <div id="Content" class="wrapper">
+    </div>
+
+    <div id="overlay"></div>
+}
+@{ Html.RenderPartial("_instructionsPartial"); }
+@Html.Partial("_Menubar")
+

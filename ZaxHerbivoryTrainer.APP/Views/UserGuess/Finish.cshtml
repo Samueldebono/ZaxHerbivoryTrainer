@@ -1,0 +1,102 @@
+﻿@model FinishedModelView
+
+<script type="text/javascript">
+
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    $(document).ready(function () {
+        setCookie("userHash", null);
+        //$.removeCookie('userHash', { path: '/' });
+
+        var options = {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.NumberOfImages)),
+                datasets: [
+                    {
+
+                        label: 'Estimate MINUS herbivory',
+                        data: @Html.Raw(Json.Serialize(Model.GuessResult)),
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)'
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    
+                    yAxes: [
+                        {
+                            ticks: {
+                                reverse: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Guess percentage differences'
+                            }
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            ticks: {
+                                reverse: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Number of images'
+                            }
+                        }
+                    ]
+                }
+                }
+            }
+        
+
+        var ctx = document.getElementById('chartJSContainer').getContext('2d');
+        new Chart(ctx, options);
+    });
+</script>
+@using (Html.BeginForm("Finish", "UserGuess", FormMethod.Post))
+{
+    <div id="Header">
+        <div class="wrapper">
+            <span class="header-home">Congratulations</span>
+        </div>
+    </div>
+
+    <div class="stat-cards">
+        <div class="statcard1">
+            <canvas id="chartJSContainer"></canvas>
+            <div class="center">
+                <div class="btn-1">
+                    <input type="submit"  class="myButton" value="Home" />
+                </div>
+            </div>
+        </div>
+
+        <div class="statcard2">
+            <img src="~/images/timer.png" class="icon">
+            <p class="heading">Total time</p>
+            <p class="content">@Model.TotalTime</p>
+        </div>
+
+        <div class="statcard2">
+            <img src="~/images/accuracy.png" class="icon" />
+            <p class="heading">Average time per image</p>
+            <p class="content">@Model.AverageTime</p>
+        </div>
+
+    </div>
+    <div id="Content" class="wrapper">
+    </div>
+    <div id="overlay"></div>
+}
+
+@Html.Partial("_Menubar")

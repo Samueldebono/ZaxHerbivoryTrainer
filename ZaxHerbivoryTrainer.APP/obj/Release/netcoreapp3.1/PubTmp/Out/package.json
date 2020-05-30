@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "name": "Herbivorator",
+  "private": true,
+  "devDependencies": {},
+  "dependencies": {
+    "blueimp-file-upload": "^10.9.0",
+    "bootstrap": "^3.3.6",
+    "cloudinary-jquery-file-upload": "^2.8.2",
+    "font-awesome": "^4.6.1",
+    "jquery": "^2.2.4"
+  }
+}

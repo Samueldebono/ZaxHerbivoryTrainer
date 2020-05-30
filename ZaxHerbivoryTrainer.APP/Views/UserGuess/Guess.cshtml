@@ -1,0 +1,352 @@
+﻿
+@model GuessViewModel
+
+@{
+    var FinishedPercentage = 98;
+}
+<script type="text/javascript">
+
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+    $.removeCookie = function (key, options) {
+        if ($.cookie(key) === undefined) { 
+            return false;
+        }
+        // Must not alter options, thus extending a fresh object...
+        $.cookie(key, '', $.extend({}, options, { expires: -1 }));
+        return !$.cookie(key);
+    };
+
+
+
+    var usedImages = [];
+        var mins = 0;
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'myButton'
+        },
+        buttonsStyling: false
+    });
+    var timer;
+    $(document).ready(function() {
+        setCookie("userHash", '@Model.UserHash', '@DateTime.Now.AddDays(1)');
+        usedImages.push('@Model.CurrentImageId');
+        var startoverall = new Date;
+        var finishPercentage = @FinishedPercentage;
+
+        timer = window.setInterval(function () {
+            secondsoverall = Math.round((new Date - startoverall) / 1000, 0);
+            $('#Timer').val(secondsoverall);
+        }, 1000);
+
+        $('#btnGuess-finished').click(function () {
+            $.removeCookie('userHash', { path: '/' });
+        });
+
+        $('#btnGuess').click(function() {
+            $.ajax({
+                url: '@Url.Action("GuessCheck", "UserGuess")',
+                type: 'POST',
+                data: {
+                    imageId: $('#CurrentImageId').val(),
+                    guessPercent: $('.rangeslider__handle')[0].textContent,
+                    userId: '@Model.UserId',
+                    currentTime: $('#Timer').val()
+                },
+                success: function(data) {
+
+                    $('#finalResult').val(data.Total);
+
+                    if (data.Count >= 10) {
+                        $('#accuracyArea').removeClass("hide");
+                        $('#accuracyResult').removeClass("hide");
+                        $('#actIcon').removeClass("hide");
+                        $('#accuracyResult').text(data.Total + "% accuracy from the last 10 images");
+                    }
+
+                    if (data.Total > finishPercentage) {
+                        swalWithBootstrapButtons.fire({
+                            html:
+                                '<div id="success-box"> ' +
+                                    '<div class="face">' +
+                                    '<div class="eye"></div>' +
+                                    '<div class="eye right"></div>' +
+                                    '<div class="mouth happy"></div>' +
+                                    '</div>' +
+                                    '<div class="shadow scale"></div>' +
+                                    '<div class="message"><h1 class="alert">Well Done!</h1><p>You have reached the final percentage, click finished to see your results! </p>' +
+                                    '<p> Your answer was: ' +
+                                    ($('.rangeslider__handle')[0].textContent) + "%" +
+                                    '</p>' +
+                                    '<p> The herbivory percentage is: ' +
+                                    data.CorrectPercent + "%" +
+                                    '</p></div>' +
+                                    '</div>',
+                            showCloseButton: false,
+                            showCancelButton: false,
+                            allowOutsideClick: false,
+                            confirmButtonText: 'Done',
+                            confirmButtonAriaLabel: 'Done'
+                        });
+                            window.clearInterval(timer);
+                            $('#btnGuess-finished').removeClass("hide");
+                            $('#btnGuess').addClass("hide");
+                            $('#FinalPercentage').val(data.Total);
+                            $('#ImagesUsed').val(usedImages.length);
+
+                            }
+                        else
+                        {
+                            if (data.Answer) {
+
+                                var idMessageBox = '<div id="almost-box">';
+                                var title = '<h1 class="alert">So close!</h1>';
+                                var message = "That's close enough to be correct!";
+
+                                if (data.CorrectPercent == ($('.rangeslider__handle')[0].textContent )) {
+                                    message = "PERFECT percentage guess!!";
+                                    idMessageBox = '<div id="success-box">';
+                                    title = '<h1 class="alert">Awesome!</h1>';
+                                }
+                                swalWithBootstrapButtons.fire({
+                                    html:
+                                        idMessageBox +
+                                        '<div class="face">' +
+                                        '<div class="eye"></div>' +
+                                        '<div class="eye right"></div>' +
+                                        '<div class="mouth happy"></div>' +
+                                        '</div>' +
+                                        '<div class="shadow scale"></div>' +
+                                        '<div class="message">' + title+'<p>' +
+                                        message +
+                                        '</p>' +
+                                        '<p> Your answer was: ' +
+                                        ($('.rangeslider__handle')[0].textContent) + "%"+
+                                        '</p>' +
+                                        '<p> The herbivory percentage is: ' +
+                                        data.CorrectPercent + "%" +
+                                        '</p></div>' +
+                                        '</div>',
+                                    showCloseButton: false,
+                                    showCancelButton: false,
+                                    allowOutsideClick: false,
+                                    confirmButtonText: 'Next image',
+                                    confirmButtonAriaLabel: 'Next image'
+                                });
+
+
+                            } else {
+                                swalWithBootstrapButtons.fire({
+                                    html:
+                                        '<div id="error-box">' +
+                                        '<div class="face2">' +
+                                        '<div class="eye"></div>' +
+                                        '<div class="eye right"></div>' +
+                                        '<div class="mouth sad"></div></div>' +
+                                        '<div class="shadow move"></div>' +
+                                        '<div class="message"><h1 class="alert">Whoops!</h1><p>That is not the right answer</p><p> Your answer was: ' +
+                                        ($('.rangeslider__handle')[0].textContent) + "%" +
+                                        '</p><p> The correct herbivory percentage is: ' +
+                                        data.CorrectPercent + "%" +
+                                        '</p></div>' +
+                                        '</div>',
+                                    showCloseButton: false,
+                                    showCancelButton: false,
+                                    allowOutsideClick: false,
+                                    confirmButtonText: 'Next image',
+                                    confirmButtonAriaLabel: 'Next image'
+
+                                });
+                            }
+                        }
+                            $.ajax({
+                                url: '@Url.Action("GetNewImage", "UserGuess")',
+                                type: 'POST',
+                                data:
+                                    { preImageId: usedImages } //array
+                                ,
+                                success: function (data) {
+                                    usedImages.push(data.ImageId);
+                                    ResetSlider();
+                                    $('#CurrentImageId').val(data.ImageId);
+                                    $('#GuessResult').val(0);
+                                    $('#image_Id').attr("src", data.ImageUrl);
+                                }
+                            });
+                        }
+            });
+        });
+    });
+
+        function PopupMessage(isSuccess) {
+            var html = '<div id="error-box">' +
+                '<div class="face2">' +
+                '<div class="eye"></div>' +
+                '<div class="eye right"></div>' +
+                '<div class="mouth sad"></div></div>' +
+                '<div class="shadow move"></div>' +
+                '<div class="message"><h1 class="alert">Whoops!</h1><p>That is not the right answer</p><p> Your answer was: ' +
+                ($('.rangeslider__handle')[0].textContent) + "%" +
+                '</p><p> The correct herbivory percentage is: ' +
+                data.CorrectPercent + "%" +
+                '</p></div>' +
+                '</div>';
+
+            if (isSuccess) {
+                html =  '<div id="success-box"> ' +
+                    '<div class="face">' +
+                    '<div class="eye"></div>' +
+                    '<div class="eye right"></div>' +
+                    '<div class="mouth happy"></div>' +
+                    '</div>' +
+                    '<div class="shadow scale"></div>' +
+                    '<div class="message"><h1 class="alert">Awesome!</h1><p>' +
+                    message +
+                    '</p>' +
+                    '<p> Your answer was: ' +
+                    ($('.rangeslider__handle')[0].textContent) + "%"+
+                    '</p>' +
+                    '<p> The herbivory percentage is: ' +
+                    data.CorrectPercent + "%" +
+                    '</p></div>' +
+                    '</div>';
+            }
+
+
+            swalWithBootstrapButtons.fire({
+                html: html,
+                showCloseButton: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonText: 'Next image',
+                confirmButtonAriaLabel: 'Next image'
+
+            });
+    }
+
+    function ResetSlider() {
+        $('.rangeslider__handle').text(0);
+        $('.rangeslider__handle').css("left", 0);
+        $('.rangeslider__handle').removeClass("js-med");
+        $('.rangeslider__handle').removeClass("js-high");
+        $('.rangeslider__handle').addClass("js-low");
+        $('.rangeslider__tooltip').text("Signs of herbivory are low");
+    }
+
+</script>
+
+
+<script id="rendered-js">
+    const $element = $('input[type="range"]');
+
+    $(document).ready(function () {
+        const $element = $('input[type="range"]');
+
+        const $tooltip = $('#range-tooltip');
+        const sliderStates = [
+            { name: "low", tooltip: "Signs of herbivory are low", range: _.range(0, 26) },
+            { name: "med", tooltip: "Signs of herbivory are medium.", range: _.range(26, 51) },
+            { name: "high", tooltip: "Signs of herbivory are high", range: _.range(51, 100) }
+        ];
+        var currentState;
+        var $handle;
+        $element
+            .rangeslider({
+                polyfill: false,
+                onInit: function () {
+                    $handle = $('.rangeslider__handle', this.$range);
+                    updateHandle($handle[0], this.value);
+                    updateState($handle[0], this.value);
+                }
+            })
+            .on('input',
+                function () {
+                    updateHandle($handle[0], this.value);
+                    checkState($handle[0], this.value);
+                });
+
+        // Update the value inside the slider handle
+        function updateHandle(el, val) {
+            el.textContent = val;
+        }
+
+        // Check if the slider state has changed
+        function checkState(el, val) {
+            // if the value does not fall in the range of the current state, update that shit.
+            if (!_.contains(currentState.range, parseInt(val))) {
+                updateState(el, val);
+            }
+        }
+
+        // Change the state of the slider
+        function updateState(el, val) {
+            for (var j = 0; j < sliderStates.length; j++) {
+                if (_.contains(sliderStates[j].range, parseInt(val))) {
+                    currentState = sliderStates[j];
+                    // updateSlider();
+                }
+            }
+
+            // Update handle color
+            $handle
+                .removeClass(function (index, css) {
+                    return (css.match(/(^|\s)js-\S+/g) || []).join(' ');
+                })
+                .addClass("js-" + currentState.name);
+            // Update tooltip
+            $tooltip.html(currentState.tooltip);
+        }
+    });
+</script>
+
+@using (Html.BeginForm("Guess", "UserGuess", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.UserId)
+    @Html.HiddenFor(m => m.UserHash)
+    @Html.HiddenFor(m => m.CurrentCloudinaryUrl)
+    @Html.HiddenFor(m => m.CurrentImageId)
+    @Html.HiddenFor(m => m.ReturningTimer)
+
+    <div id="navigation">
+        <div class="navigation-wrapper">
+            <span class="navigation-home">ZAX Herbivory Trainer</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <img id="image_Id" src="@Model.CurrentCloudinaryUrl" alt="Avatar">
+        <div class="text_container">
+            <h4>Estimate the percentage of leaf damage</h4>
+
+            <div class="slider">
+                <input type="range"
+                       name="participants"
+                       min="0"
+                       max="100"
+                       value="0">
+                <span class="rangeslider__tooltip" id="range-tooltip"></span>
+            </div>
+            <div class="button-box">
+                <button type="button" id="btnGuess" class="myButton @(Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage ? "hide" :"")">SUBMIT</button>
+                <input id="btnGuess-finished" class="myButton @(Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage ? "" :"hide")" type="submit" value="FINISHED" />
+
+            </div>
+            <div class="timer">
+                <p id="accuracyArea" class="timer-text @(Model.ReturningUser ? "": "hide")"> <img id="actIcon" src="~/images/accuracy_black.png" class="timer-icon @(Model.ReturningUser ? "": "hide")"></p> <p id="accuracyResult" class="timer-text @(Model.ReturningUser ? "": "hide")">@Model.FinalPercentage% accuracy from the last 10 images</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay"></div>
+    @Html.TextBoxFor(m => m.Timer, new { @class = "hide" })
+    @Html.TextBoxFor(m => m.FinalPercentage, new { @class = "hide" })
+    @Html.TextBoxFor(m => m.ImagesUsed, new { @class = "hide" })
+}
+
+@Html.Partial("_Menubar")
