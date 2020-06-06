@@ -36,8 +36,7 @@ namespace ZaxHerbivoryTrainer.APP
 
             services.AddHttpClient("APIClient", client =>
             {
-                //client.BaseAddress = new Uri("https://localhost:44388/");
-                client.BaseAddress = new Uri("http://api.zaxherbivorytrainer.com/");
+                client.BaseAddress = new Uri("API_URL");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
