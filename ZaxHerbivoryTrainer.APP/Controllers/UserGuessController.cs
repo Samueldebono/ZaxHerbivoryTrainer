@@ -268,7 +268,7 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                     PictureCycled = model.ImagesUsed.Value,
                     Time = DateTime.UtcNow.Date.Add(time)
                 };
-                var editUserRequest = new HttpRequestMessage(HttpMethod.Put, $"/api/user/hash/{model.UserHash}")
+                var editUserRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/user/hash/{model.UserHash}")
                 {
                     Content = new StringContent(JsonSerializer.Serialize(binding), Encoding.UTF8, "application/json")
                 };

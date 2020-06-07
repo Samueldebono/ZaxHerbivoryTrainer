@@ -3,6 +3,7 @@
 
 @{
     var FinishedPercentage = 98;
+    var FinishedTime = 1800;
 }
 <script type="text/javascript">
 
@@ -39,6 +40,7 @@
         usedImages.push('@Model.CurrentImageId');
         var startoverall = new Date;
         var finishPercentage = @FinishedPercentage;
+        var finishedTime = @FinishedTime;
 
         timer = window.setInterval(function () {
             secondsoverall = Math.round((new Date - startoverall) / 1000, 0);
@@ -69,8 +71,13 @@
                         $('#actIcon').removeClass("hide");
                         $('#accuracyResult').text(data.Total + "% accuracy from the last 10 images");
                     }
+                    //if reach percentage or time limit
+                    if (data.Total > finishPercentage || $('#Timer').val() > finishedTime) {
+                        var reason = "final percentage";
+                        if ($('#Timer').val() > finishedTime) {
+                             reason = "time limit";
+                        }
 
-                    if (data.Total > finishPercentage) {
                         swalWithBootstrapButtons.fire({
                             html:
                                 '<div id="success-box"> ' +
@@ -80,7 +87,7 @@
                                     '<div class="mouth happy"></div>' +
                                     '</div>' +
                                     '<div class="shadow scale"></div>' +
-                                    '<div class="message"><h1 class="alert">Well Done!</h1><p>You have reached the final percentage, click finished to see your results! </p>' +
+                                '<div class="message"><h1 class="alert">Well Done!</h1><p>You have reached the ' + reason +', click finished to see your results! </p>' +
                                     '<p> Your answer was: ' +
                                     ($('.rangeslider__handle')[0].textContent) + "%" +
                                     '</p>' +
@@ -333,8 +340,8 @@
                 <span class="rangeslider__tooltip" id="range-tooltip"></span>
             </div>
             <div class="button-box">
-                <button type="button" id="btnGuess" class="myButton @(Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage ? "hide" :"")">SUBMIT</button>
-                <input id="btnGuess-finished" class="myButton @(Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage ? "" :"hide")" type="submit" value="FINISHED" />
+                <button type="button" id="btnGuess" class="myButton @(Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage ||(Model.Timer > FinishedTime) ? "hide" :"")">SUBMIT</button>
+                <input id="btnGuess-finished" class="myButton @((Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage) ||(Model.Timer > FinishedTime) ? "" :"hide")" type="submit" value="FINISHED" />
 
             </div>
             <div class="timer">

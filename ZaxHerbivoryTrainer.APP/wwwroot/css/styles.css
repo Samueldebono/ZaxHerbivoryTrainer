@@ -1582,3 +1582,59 @@ td {
     text-align: right;
     margin-top: 15px;
 }
+    /*SWAL2*/
+.swal-wide {
+    width: 850px !important;
+    text-align: left !important;
+}
+    .swal-wide .swal2-content {
+        text-align: left !important;
+        font-size: 1em !important;
+    }
+
+    .swal-wide .swal2-confirm {
+        box-shadow: 0px 10px 14px -7px #276873;
+        background: linear-gradient(to bottom, #6a8316 5%, #1e9818 100%);
+        background-color: #6a8316;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-size: 14px;
+        padding: 9px 27px;
+        margin: 9px 27px;
+        text-decoration: none;
+        text-shadow: 0px 1px 0px #3d768a;
+        letter-spacing: 0.06em;
+        border: none;
+        text-align: right;
+        outline: 0;
+    }
+    .swal-wide .swal2-cancel {
+        box-shadow: 0px 10px 14px -7px #276873;
+        background: linear-gradient(to bottom, lightgray 5%, #fff 100%);
+        background-color: #FFF;
+        display: inline-block;
+        cursor: pointer;
+        color: #000;
+        font-size: 14px;
+        padding: 9px 27px;
+        margin: 9px 27px;
+        text-decoration: none;
+        text-shadow: 0px 1px 0px #3d768a;
+        letter-spacing: 0.06em;
+        border: none;
+        text-align: right;
+        outline: 0;
+    }
+
+.swal-wide .swal2-confirm:hover,
+        .swal-wide .swal2-cancel:hover {
+            background: linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+            background-color: #408c99;
+        }
+
+.swal-wide .swal2-confirm:active,
+        .swal-wide .swal2-cancel:active {
+            position: relative;
+            top: 1px;
+        }

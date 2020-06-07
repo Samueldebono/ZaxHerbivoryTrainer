@@ -47,7 +47,7 @@ namespace ZaxHerbivoryTrainer.API.Services
 
         public IEnumerable<User> GetUsers()
         {
-            var query = _context.User as IQueryable<User>;
+            var query = _context.User.Include(x => x.Guesses) as IQueryable<User>;
             
             return query.ToList<User>();
         }        
