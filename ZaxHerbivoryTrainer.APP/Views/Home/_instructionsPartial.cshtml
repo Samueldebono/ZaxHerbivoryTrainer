@@ -18,14 +18,31 @@
 
     <div class="instruction-card">
         <img src="~/images/Asset3.png" class="instuction-img">
-        <p>After estimating 10 images, a running average of your estimate accuracy will be displayed. Your training will continue for as long as it takes the running average of your last 10 images to reach 99-100% accuracy.  </p>
+        <p>After estimating 10 images, a running average of your estimate accuracy will be displayed. Your training will continue for as long as it takes the running average of your last 10 images to reach 99-100% accuracy. At the completion of training you will see your progress displayed in a graph.</p>
 
     </div>
 
     <div class="instruction-card">
         <img src="~/images/Asset4.png" class="instuction-img">
-        <p>At the completion of training you will see your progress displayed in a graph.</p>
+        <p>Estimating Tips:<br/>
+            When estimating leaf damage, try to mentally divide the leaf into segments (e.g. halves, quarters, eighths etc.) and then visualise all the damage moving to one area of the leaf. This will help determine your estimate percentages.<br/>
+            Take note of leaf shape, as it could be easy for edge damage to be overlooked. 
+        </p>
+        <div class="btn-1" >
+            <a id="btnInstructionsExample"> <span>Example here</span></a>
+        </div>
 
     </div>
 
 </div>
+<script>
+    $('#btnInstructionsExample').click(function() {
+        Swal.fire({
+            html: '<img src="/images/examples_of_herbivory.png"  width="600" height="600">',
+            imageAlt: 'Herbivory trainer example',
+            customClass: 'swal-wide-2',
+        });
+    });
+
+
+</script>

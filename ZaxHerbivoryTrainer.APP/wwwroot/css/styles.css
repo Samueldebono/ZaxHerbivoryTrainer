@@ -151,9 +151,11 @@ a {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    cursor: pointer;
 }
 
     .btn-1 a,
+    .btn-1 input ,
     .btn-2 input ,
     .btn-2 a 
     {
@@ -165,6 +167,12 @@ a {
         letter-spacing: 2px;
         position: relative;
         display: inline-block;
+        cursor: pointer;
+
+    }
+    .btn-1 input:focus
+    {
+    outline: none;
     }
 
 span {
@@ -175,7 +183,8 @@ span {
 
 /* Button 1 styles */
 
-.btn-1 a::before {
+.btn-1 a::before ,
+.btn-1 input::before {
     content: "";
     position: absolute;
     top: 5px;
@@ -188,11 +197,15 @@ span {
     transform: scaleY(1);
 }
 
-.btn-1 a:hover::before {
+.btn-1 a:hover::before, 
+.btn-1 input:hover::before 
+{
     transform: scaleY(0);
 }
 
-.btn-1 a::after {
+.btn-1 a::after, 
+.btn-1 input::after 
+{
     content: "";
     position: absolute;
     left: 5px;
@@ -206,7 +219,9 @@ span {
 }
 /* Created by http://grohit.com/  */
 
-.btn-1 a:hover::after {
+.btn-1 a:hover::after, 
+.btn-1 input:hover::after 
+{
     transform: scaleX(0);
 }
 
@@ -402,6 +417,19 @@ img.instuction-img {
     letter-spacing: 0.06em;
     line-height: 20px;
 }
+
+.instruction-card .btn-1 {
+    width: 100%;
+}
+.instruction-card .btn-1 input{
+    width: 100%;
+}
+    .instruction-card .btn-1 a::after {
+        background-color: white;
+    }
+    .instruction-card .btn-1 a::before {
+        background-color: white;
+    }
 
 
 /************** PLAY GAME **********/
@@ -1583,9 +1611,11 @@ td {
     margin-top: 15px;
 }
     /*SWAL2*/
+.swal-wide-2 {
+    width: 750px !important;
+}
 .swal-wide {
     width: 850px !important;
-    text-align: left !important;
 }
     .swal-wide .swal2-content {
         text-align: left !important;
