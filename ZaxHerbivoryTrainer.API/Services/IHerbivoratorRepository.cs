@@ -19,6 +19,10 @@ namespace ZaxHerbivoryTrainer.API.Services
         void UpdateUser(User user);
         bool UserExists(int userId);
 
+
+        IEnumerable<UserEmails> GetUserEmails();
+        UserEmails CreateUserEmail(UserEmails userEmail);
+
         #region UserGuess
 
         IEnumerable<UsersGuess> GetUserGuesses();

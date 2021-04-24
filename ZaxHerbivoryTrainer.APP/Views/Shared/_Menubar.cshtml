@@ -1,4 +1,5 @@
-﻿<script>
+﻿@using ZaxHerbivoryTrainer.APP.Helpers
+<script>
     function Logout() {
         $.ajax({
             url: '@Url.Action("Logoff", "Account")',
@@ -10,18 +11,48 @@
         });
     }
 
+    function PhaseTwo() {
+        window.location.href = '@Url.Action("GuessWithFeedback", "UserGuess")';
+    }
+
+    function PhaseThree() {
+        window.location.href = '@Url.Action("GuessNoFeedback", "UserGuess", new {phase = (byte) @Phase.THREE})';
+    }
 
 </script>
 
 <nav class="main-menu">
     <ul>
        
-    </ul>
+    </ul>    
+    @if (Session.Instance._userRole == Session.Role.ReturnGuest)
+    {
+        <ul>
+            <li>
+                <a onclick="PhaseTwo();">
+                    <img src="~/images/two.png" class="fa">
+                    <span class="nav-text">
+                        Phase 2
+                    </span>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a onclick="PhaseThree();">
+                    <img src="~/images/three.png" class="fa">
+                    <span class="nav-text">
+                        Phase 3
+                    </span>
+                </a>
+            </li>
+        </ul>
+    }
 
     <ul class="logout">
         <li>
-            <a onclick="Logout()">
-                <img src="~/images/logout.png" class="fa">
+            <a onclick="Logout();">
+                <img src="~/images/logout2.png" class="fa">
                 <span class="nav-text">
                     Logout
                 </span>

@@ -70,7 +70,8 @@ namespace ZaxHerbivoryTrainer.APP.Helpers
         public enum Role : byte
         {
             Guest =0,
-            Admin = 1
+            Admin = 1,
+            ReturnGuest =2
         }
     }
 }

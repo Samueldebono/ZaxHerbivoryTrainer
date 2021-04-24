@@ -7,5 +7,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>C:\Users\Sam-Commtract\Documents\Temp Files To Delete\WebSiteAPI</_PublishTargetUrl>
+    <History>True|2021-04-20T12:14:58.5664377Z;</History>
   </PropertyGroup>
 </Project>

@@ -15,9 +15,9 @@ namespace ZaxHerbivoryTrainer.API.Controllers
 {
     [Route("api")]
     [ApiController]
-    [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 0)]
+    [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 10)]
     [HttpCacheValidation(MustRevalidate = true)]
-    [Produces("application/json")] //if need to expose API later
+    [Produces("application/json")] 
     public class ImageController: ControllerBase
     {
         private readonly IZaxHerbivoryTrainerRepository _ZaxHerbivoryTrainerRepository;
@@ -39,7 +39,8 @@ namespace ZaxHerbivoryTrainer.API.Controllers
             return Ok(image);
         }
 
-        [Authorize]
+        //[Authorize]
+        [AllowAnonymous]
         [HttpGet("images")]
         public ActionResult<List<ImageDto>> GetAllImages()
         {

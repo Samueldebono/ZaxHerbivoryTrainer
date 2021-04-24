@@ -17,5 +17,7 @@ namespace ZaxHerbivoryTrainer.API.Bindings
         public int PictureCycled { get; set; }
         [DataMember(Name = "Time")]
         public DateTime Time { get; set; }
+        [DataMember(Name = "Phase")]
+        public byte Phase { get; set; }
     }
 }

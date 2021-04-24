@@ -1,0 +1,74 @@
+﻿<script>
+    function Logout() {
+        $.ajax({
+            url: '@Url.Action("Logoff", "Account")',
+            type: 'POST',
+            data: {},
+            success: function (data) {
+                window.location.href = '@Url.Action("Login", "Account")';
+            }
+        });
+    }
+
+    function UserGuessSearch() {
+
+        window.location.href = '@Url.Action("UserGuessSearch", "Admin")';
+    }
+
+    function UserEmails() {
+        window.location.href = '@Url.Action("UserEmailSearch", "Admin")';
+    }
+
+        function UserCompletionData() {
+        window.location.href = '@Url.Action("UserCompletionDataSearch", "Admin")';
+    }
+</script>
+
+<nav class="main-menu">
+    <ul>
+       
+    </ul>    
+  
+    <ul>
+        <li>
+            <a onclick="UserGuessSearch()">
+                <img src="~/images/searchv2.png"  class="fa">
+                <span class="nav-text">
+                    User Guess Search
+                </span>
+            </a>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <a onclick="UserCompletionData()">
+                <img src="~/images/complete.png" class="fa">
+                <span class="nav-text">
+                    User Completion Data
+                </span>
+            </a>
+        </li>
+    </ul>  
+
+    <ul>
+        <li>
+            <a onclick="UserEmails()">
+                <img src="~/images/emailv2.png" class="fa">
+                <span class="nav-text">
+                    User Emails
+                </span>
+            </a>
+        </li>
+    </ul>  
+
+    <ul class="logout">
+        <li>
+            <a onclick="Logout()">
+                <img src="~/images/logout2.png" class="fa" style="margin-left: 0;">
+                <span class="nav-text">
+                    Logout
+                </span>
+            </a>
+        </li>
+    </ul>
+</nav>

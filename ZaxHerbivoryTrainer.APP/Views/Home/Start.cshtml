@@ -1,4 +1,5 @@
 ﻿
+@using ZaxHerbivoryTrainer.APP.Helpers
 @model StartModel
 @{
     ViewData["Title"] = "Home Page";
@@ -24,10 +25,9 @@
     }
 
 
-
     var moreInformationDialog;
-    $(document).ready(function () {
-
+    $(document).ready(function() {
+        if ('@Session.Instance._userRole' === '@Session.Role.Guest'){
         const swalConsent = Swal.mixin({
             customClass: {
                 confirmButton: 'myButton',
@@ -36,28 +36,67 @@
             buttonsStyling: false
         });
 
-        swalConsent.fire({
-            html: "<p>Implied Consent to use participant data for research: <br>" +
-                "<br>The ZAX Herbivory trainer aims to use images of leaf scans with known percentages of damage to train researchers to accurately visually estimate leaf damage. We hope this online training resource is used by researchers worldwide, to allow them to quickly and accurately estimate herbivore damage instead of using existing time-intensive digital analysis methods." +
+        //User no longer need this to be displayed
+        //SD - 2020/11/01
+        //swalConsent.fire({
+        //    html: "<p>Implied Consent to use participant data for research: <br>" +
+        //        "<br>The ZAX Herbivory trainer aims to use images of leaf scans with known percentages of damage to train researchers to accurately visually estimate leaf damage. We hope this online training resource is used by researchers worldwide, to allow them to quickly and accurately estimate herbivore damage instead of using existing time-intensive digital analysis methods." +
 
-                "The study is being carried out by Prof. Angela Moles and Zoe Xirocostas from the Evolution & Ecology Research Centre, School of Biological, Earth and Environmental Sciences at UNSW Sydney. This research is being funded by a Discovery grant from the Australian Research Council." +
+        //        "The study is being carried out by Prof. Angela Moles and Zoe Xirocostas from the Evolution & Ecology Research Centre, School of Biological, Earth and Environmental Sciences at UNSW Sydney. This research is being funded by a Discovery grant from the Australian Research Council." +
+        //        "<strong>" +
+        //        "<br><br>Before you decide to participate in this research study, we need to ensure that it is ok for you to take part. The research study is looking recruit people who meet the following criteria:" +
+        //        "<ul>" +
+        //        "<li>Are over the age of 18</li>" +
+        //        "<li>Are willing and able to participate</li>" +
+        //        "<li>Have not previously estimated herbivory in a professional context.</li>" +
+        //        "</ul>" +
+        //        "</strong>" +
+        //        "Participation in this research study is <strong>voluntary</strong>. If you do not want to take part, you do not have to. " +
+        //        "No personal identifying data is collected from this website. We only collect data relating to the time it takes you complete training, how many images you estimated and what percentage of accuracy you achieved at the end of training." +
+        //        "This training app should take no longer than <strong>30 minutes</strong> to complete.<br>In most cases it will only take 10 minutes. Once you complete training OR if 30 minutes passes, the app will take you to a finishing screen and report the level of accuracy you have achieved. To complete training you must accrue a <strong>running average of 98-100% accuracy on your 10 most recent estimates.</strong>" +
+        //        "<br>If you decide you want to take part in the research study <strong>please press “Agree”</strong></p>"
+        //    ,
+        //    showCancelButton: true,
+        //    customClass: 'swal-wide',
+        //    confirmButtonText: 'Yes, I agree!',
+        //    cancelButtonText: 'Logout',
+        //    reverseButtons: true
+        //}).then((result) => {
+        //    if (result.value) {
+
+        //    } else if (result.dismiss === Swal.DismissReason.cancel) {
+        //        window.location.replace("/Account/Logoff");
+        //    }
+        //});
+
+          swalConsent.fire({
+              html: "<p><strong>Disclaimer</strong>: <br>" +
+                "<br>The ZAX Herbivory Trainer aims to use images of leaf scans with known percentages of damage to train researchers to accurately visually estimate leaf damage. " +
+                "We hope this online training resource is used by researchers worldwide, to allow them to quickly and accurately estimate herbivore damage instead of using existing " +
+                "time-intensive digital analysis methods. The study is being carried out by Prof. Angela Moles and Zoe Xirocostas from the Evolution and Ecology Research Centre, " +
+                "School of Biological, Earth and Environmental Sciences at UNSW Sydney. This research is being funded by a discovery grant from the Australian Research Council." +
                 "<strong>" +
-                "<br><br>Before you decide to participate in this research study, we need to ensure that it is ok for you to take part. The research study is looking recruit people who meet the following criteria:" +
+                "<br><br>Before you decide to participate in this research study, we need to ensure that it is ok for you to take part. The research study is looking to recruit people who meet the following criteria:" +
                 "<ul>" +
                 "<li>Are over the age of 18</li>" +
                 "<li>Are willing and able to participate</li>" +
                 "<li>Have not previously estimated herbivory in a professional context.</li>" +
+                "<li>Have not participated in previous versions of this app/study</li>" +
                 "</ul>" +
                 "</strong>" +
-                "Participation in this research study is <strong>voluntary</strong>. If you do not want to take part, you do not have to. " +
-                "No personal identifying data is collected from this website. We only collect data relating to the time it takes you complete training, how many images you estimated and what percentage of accuracy you achieved at the end of training." +
-                "This training app should take no longer than <strong>30 minutes</strong> to complete.<br>In most cases it will only take 10 minutes. Once you complete training OR if 30 minutes passes, the app will take you to a finishing screen and report the level of accuracy you have achieved. To complete training you must accrue a <strong>running average of 99-100% accuracy on your 10 most recent estimates.</strong>" +
-                "<br>If you decide you want to take part in the research study <strong>please press “Agree”</strong></p>"
+                "Participation in this research study is <strong>voluntary</strong>. If you do not want to take part, you do not have to. No personal identifying data is collected from this website (apart from email address to send you a $20 e-giftcard). " +
+                "We only collect data relating to the time is takes you to complete each phase, how many images you estimated, your average accuracy at the end of each phase and what percentage of accuracy you achieved at the end of Phase 2. " +
+                "This entire app (Phase 1, 2 and 3) should take no longer than 30 minutes to complete. Once you complete training, the app will take you to a completion screen and ask you to submit your email address to receive " +
+                  "a $20 Woolworths e-giftcard for your participation. To complete this app you must all three phases.<br>" +
+                "<br><strong>Phase 1: </strong>You will estimate the percentage of leaf damage on 50 leaf images. You will receive no feedback after each individual estimate.</p>"+
+                "<strong>Phase 2: </strong>You will estimate the percentage of leaf damage on leaf images until you achieve a running average of ≥98% accuracy on your 10 most recent estimates. You will receive feedback after each individual estimate.</p>"+
+                "<strong>Phase 3: </strong>You will estimate the percentage of leaf damage on 50 leaf images. You will receive no feedback after each individual estimate.</p>"+
+                "<br><strong>If you decide you want to take part in the research study please press “Agree”</strong></p>"
             ,
             showCancelButton: true,
             customClass: 'swal-wide',
             confirmButtonText: 'Yes, I agree!',
-            cancelButtonText: 'No, I do not consent',
+            cancelButtonText: 'Logout',
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
@@ -66,6 +105,7 @@
                 window.location.replace("/Account/Logoff");
             }
         });
+            
 
 
         const swalWithBootstrapButtons = Swal.mixin({
@@ -76,7 +116,7 @@
             },
             buttonsStyling: false
         });
-
+            }
 
         var hash = getCookie("userHash");
         $("#hash-obj").val(hash);
@@ -105,7 +145,7 @@
         }
 
         moreInformationDialog = $("#instructionModal").dialog({
-            autoOpen: false,
+            autoOpen: true,
             position: ['top', 50],
             resizable: false,
             width: '100%',
@@ -129,8 +169,6 @@
 
     });
 
-
-
 </script>
 @using (Html.BeginForm("Start", "Home", FormMethod.Post))
 {
@@ -147,9 +185,12 @@
         <div class="btn-1">
             <a id="btnInstructions"><span>Instructions</span></a>
         </div>
-        <div class="btn-2" type="submit">
-            <input type="submit" value="Let's Begin" />
-        </div>
+        @if (@Session.Instance._userRole == Session.Role.Guest)
+        {
+            <div class="btn-2" type="submit">
+                <input type="submit" value="Let's Begin"/>
+            </div>
+        }
     </div>
 
     <div id="Content" class="wrapper">

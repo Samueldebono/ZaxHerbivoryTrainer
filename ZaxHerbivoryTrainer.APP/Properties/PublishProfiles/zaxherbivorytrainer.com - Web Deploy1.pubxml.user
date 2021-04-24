@@ -7,6 +7,5 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword />
-    <_PublishTargetUrl>C:\Users\Sam-Commtract\Documents\Temp Files To Delete\WebSite</_PublishTargetUrl>
   </PropertyGroup>
 </Project>

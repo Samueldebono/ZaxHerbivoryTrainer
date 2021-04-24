@@ -31,7 +31,7 @@
             },
             options: {
                 scales: {
-                    
+
                     yAxes: [
                         {
                             ticks: {
@@ -57,14 +57,18 @@
                 }
                 }
             }
-        
+
 
         var ctx = document.getElementById('chartJSContainer').getContext('2d');
         new Chart(ctx, options);
     });
 </script>
-@using (Html.BeginForm("Finish", "UserGuess", FormMethod.Post))
+@using (Html.BeginForm("FinishPhase2", "UserGuess", FormMethod.Post))
 {
+
+
+    @Html.HiddenFor(m => m.UserGuid)
+
     <div id="Header">
         <div class="wrapper">
             <span class="header-home">Congratulations</span>
@@ -76,7 +80,7 @@
             <canvas id="chartJSContainer"></canvas>
             <div class="center">
                 <div class="btn-1">
-                    <input type="submit"  class="myButton" value="Home" />
+                    <input type="submit" class="myButton" value="Next Phase" />
                 </div>
             </div>
         </div>

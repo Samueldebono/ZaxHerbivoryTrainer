@@ -1,0 +1,240 @@
+﻿@using ZaxHerbivoryTrainer.APP.Helpers
+@model CompletedModelView
+
+<script type="text/javascript">
+
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    $(document).ready(function () {
+        setCookie("userHash", null);
+        //$.removeCookie('userHash', { path: '/' });
+        if ('@Session.Instance._userRole' === '@Session.Role.Guest')
+        {
+            GreetingsMessage(0);
+        }
+        var optionsPhase1 = {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.NumberOfImagesPhase1)),
+                datasets: [
+                    {
+
+                        label: 'Phase 1 - Estimate MINUS herbivory',
+                        data: @Html.Raw(Json.Serialize(Model.GuessResultPhase1)),
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)'
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    
+                    yAxes: [
+                        {
+                            ticks: {
+                                reverse: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Guess percentage differences'
+                            }
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            ticks: {
+                                reverse: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Number of images'
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+        
+        
+        var optionsPhase2 = {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.NumberOfImagesPhase2)),
+                datasets: [
+                    {
+
+                        label: 'Phase 2 - Estimate MINUS herbivory',
+                        data: @Html.Raw(Json.Serialize(Model.GuessResultPhase2)),
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(181,8,14, 0.2)',
+                        borderColor: 'rgba(181,8,14, 1)'
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                reverse: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Guess percentage differences'
+                            }
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            ticks: {
+                                reverse: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Number of images'
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+
+
+        var optionsPhase3 = {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.NumberOfImagesPhase3)),
+                datasets: [
+                    {
+                        label: 'Phase 3 - Estimate MINUS herbivory',
+                        data: @Html.Raw(Json.Serialize(Model.GuessResultPhase3)),
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(124,35,217, 0.2)',
+                        borderColor: 'rgba(124,35,217, 1)'
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                reverse: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Guess percentage differences'
+                            }
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            ticks: {
+                                reverse: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Number of images'
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+
+        if ('@Model.NumberOfImagesPhase1.Any()' !== 'False') {
+            var ctxPhase1 = document.getElementById('chartJSContainerPhase1').getContext('2d');
+            new Chart(ctxPhase1, optionsPhase1);
+        }
+        if ('@Model.NumberOfImagesPhase2.Any()' !== 'False') {
+            var ctxPhase2 = document.getElementById('chartJSContainerPhase2').getContext('2d');
+            new Chart(ctxPhase2, optionsPhase2);
+        }
+        var ctxPhase3 = document.getElementById('chartJSContainerPhase3').getContext('2d');
+        new Chart(ctxPhase3, optionsPhase3);
+    });
+</script>
+<script src="~/js/Messages/GreetingsMessage.js"></script>
+
+@using (Html.BeginForm("Finish", "UserGuess", FormMethod.Post))
+{
+    <div id="Header">
+        <div class="wrapper">
+            <span class="header-home">Congratulations</span>
+        </div>
+    </div>
+
+    <div class="stat-cards">
+        <div class="statcard3">
+            @if (Model.NumberOfImagesPhase1.Any())
+            {
+                <canvas id="chartJSContainerPhase1"></canvas>
+            }
+             @if (Model.NumberOfImagesPhase2.Any())
+            {
+                <canvas id="chartJSContainerPhase2"></canvas>
+            }
+            <canvas id="chartJSContainerPhase3"></canvas>
+            <div class="center">
+                <div class="btn-1">
+                    <input type="submit" class="myButton" value="Home" />
+                </div>
+            </div>
+        </div>
+    @if (Model.NumberOfImagesPhase1.Any())
+    {
+        <div class="statcard2">
+
+            <p class="content-norm"> Please enter your email address here and we will send you a $20 Woolworths online gift card within 48 hours.
+            <p>
+
+            @Html.TextBoxFor(m => m.Email)
+            <div class="center">
+                <div class="btn-1">
+                    <input type="submit" class="myButton" value="Home"/>
+                </div>
+                <div class="btn-2" type="submit">
+                    <input type="submit" value="Save Email"/>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="statcard2">
+
+            <p class="content-norm"> Thank you<p>
+
+            <div class="center">
+                <div class="btn-1">
+                    <input type="submit" class="myButton" value="Home"/>
+                </div>
+            </div>
+        </div>
+    }
+        @*<div class="statcard2">
+            <img src="~/images/timer.png" class="icon">
+            <p class="heading">Total time</p>
+            <p class="content">@Model.TotalTime</p>
+        </div>
+
+        <div class="statcard2">
+            <img src="~/images/accuracy.png" class="icon" />
+            <p class="heading">Average time per image</p>
+            <p class="content">@Model.AverageTime</p>
+        </div>*@
+
+    </div>
+    <div id="Content" class="wrapper">
+    </div>
+    <div id="overlay"></div>
+}
+
+@Html.Partial("_Menubar")

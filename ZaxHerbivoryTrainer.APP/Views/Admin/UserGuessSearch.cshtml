@@ -35,32 +35,107 @@
             table_body += '</td>';
 
             table_body += '<td>';
+            table_body += data[i].RetentionUser;
+            table_body += '</td>';
+
+            table_body += '<td>';
+            if (data[i].FinishedPhase1Utc !== null)
+                table_body += data[i].FinishedPhase1Utc;
+            else
+                table_body += 'N/A';
+            table_body += '</td>';
+            
+            
+            table_body += '<td>';
+            if (data[i].TimePhase1 !== null)
+                table_body += data[i].TimePhase1;
+            else
+                table_body += 'N/A';
+            table_body += '</td>';
+            
+
+            table_body += '<td>';
+            if (data[i].PictureCycledPhase1 !== null)
+                table_body += data[i].PictureCycledPhase1;
+            else
+                table_body += 'N/A';
+            table_body += '</td>';
+            
+
+            table_body += '<td>';
             if (data[i].FinishedUtc !== null)
-                table_body += data[i].FinishedUtc;
+                table_body += data[i].FinishingPercentPhase1;
+            else
+                table_body += 'N/A';
+            table_body += '</td>';
+
+
+            //PHASE 2
+
+            table_body += '<td>';
+            if (data[i].FinishedPhase2Utc !== null)
+                table_body += data[i].FinishedPhase2Utc;
+            else
+                table_body += 'N/A';
+            table_body += '</td>';
+                        
+            
+            table_body += '<td>';
+            if (data[i].TimePhase2 !== null)
+                table_body += data[i].TimePhase2;
+            else
+                table_body += 'N/A';
+            table_body += '</td>';
+
+
+            table_body += '<td>';
+            if (data[i].PictureCycledPhase2 !== null)
+                table_body += data[i].PictureCycledPhase2;
+            else
+                table_body += 'N/A';
+            table_body += '</td>';
+            
+
+            table_body += '<td>';
+            if (data[i].FinishedUtc !== null)
+                table_body += data[i].FinishingPercentPhase2;
+            else
+                table_body += 'N/A';
+            table_body += '</td>';
+
+
+            //PHASE 3
+
+            table_body += '<td>';
+            if (data[i].FinishedPhase3Utc !== null)
+                table_body += data[i].FinishedPhase3Utc;
             else
                 table_body += 'N/A';
             table_body += '</td>';
 
             table_body += '<td>';
-            if (data[i].FinishedUtc !== null)
-                table_body += data[i].Time;
+            if (data[i].TimePhase2 !== null)
+                table_body += data[i].TimePhase2;
             else
                 table_body += 'N/A';
             table_body += '</td>';
 
             table_body += '<td>';
-            if (data[i].FinishedUtc !== null)
-                table_body += data[i].PictureCycled;
+            if (data[i].PictureCycledPhase3 !== null)
+                table_body += data[i].PictureCycledPhase3;
             else
                 table_body += 'N/A';
             table_body += '</td>';
 
+
             table_body += '<td>';
             if (data[i].FinishedUtc !== null)
-                table_body += data[i].FinishingPercent;
+                table_body += data[i].FinishingPercentPhase3;
             else
                 table_body += 'N/A';
             table_body += '</td>';
+
+
             table_body += '</tr>';
         }
         table_body += '</table>';
@@ -80,10 +155,22 @@
                         <th>ID</th>
                         <th>User Id</th>
                         <th>Created UTC</th>
-                        <th>Finished UTC</th>
-                        <th>Time</th>
-                        <th>Pictures</th>
-                        <th>Finished %</th>
+                        <th>Retention User</th>
+                        @*PHASE 1*@
+                        <th>P1-Finished</th>
+                        <th>P1-Time</th>
+                        <th>P1-Pictures</th>
+                        <th>P1-Finished %</th>
+                        @*PHASE 2*@
+                    <th>P2-Finished</th>
+                    <th>P2-Time</th>
+                    <th>P2-Pictures</th>
+                    <th>P2-Finished %</th>
+                        @*PHASE 3*@
+                    <th>P3-Finished</th>
+                    <th>P3-Time</th>
+                    <th>P3-Pictures</th>
+                    <th>P3-Finished %</th>
                     </tr>
                 </thead>
             </table>
@@ -98,4 +185,4 @@
     </section>
 </div>
 
-@Html.Partial("_Menubar")
+@Html.Partial("_MenubarAdmin")

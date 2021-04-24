@@ -98,6 +98,26 @@ namespace ZaxHerbivoryTrainer.API.Services
 
             return _context.User.Any(x => x.UserId == userId);
         }
+
+
+
+        public IEnumerable<UserEmails> GetUserEmails()
+        {
+            var query = _context.UserEmails as IQueryable<UserEmails>;
+
+            return query.ToList<UserEmails>();
+        }
+        public UserEmails CreateUserEmail(UserEmails userEmail)
+        {
+            if (userEmail == null)
+            {
+                throw new ArgumentNullException(nameof(userEmail));
+            }
+
+            var newUser = _context.UserEmails.Add(userEmail);
+            return newUser.Entity;
+        }
+
         #region UserGuess
         public IEnumerable<UsersGuess> GetUserGuesses()
         {
@@ -119,6 +139,9 @@ namespace ZaxHerbivoryTrainer.API.Services
         {
           
         }
+
+
+
 
         #endregion
 

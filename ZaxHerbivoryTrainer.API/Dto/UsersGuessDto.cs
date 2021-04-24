@@ -22,6 +22,8 @@ namespace ZaxHerbivoryTrainer.API.Dto
 
         [DataMember(Name = "ImageId")]
         public int ImageId { get; set; }
+        [DataMember(Name = "Phase")]
+        public byte Phase { get; set; }
 
         [DataMember(Name = "Image")]
         public virtual Image Image { set; get; }

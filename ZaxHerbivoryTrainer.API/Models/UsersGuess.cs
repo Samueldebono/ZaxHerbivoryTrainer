@@ -14,8 +14,10 @@ namespace API.ZaxHerbivoryTrainer.Models
 
         public int UserId { get; set; }
         public int ImageId { get; set; }
+        public byte Phase { get; set; }
 
         public virtual Image Image { set; get; }
         public virtual User User { set; get; }
+
     }
 }

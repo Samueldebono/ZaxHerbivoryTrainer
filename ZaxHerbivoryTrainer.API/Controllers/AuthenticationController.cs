@@ -120,14 +120,14 @@ namespace ZaxHerbivoryTrainer.API.Controllers
         }
 
         //If need to create new password
-        //[AllowAnonymous]
-        //[HttpPost("hash/authenticate")]
-        //public IActionResult Authenticate(string password)
-        //{
-        //    var passwordHash = new PasswordHasher(4859);
-        //    var temp = passwordHash.Hash(password);
-        //    return Ok(temp);
-        //}
+        [AllowAnonymous]
+        [HttpPost("hash/authenticate")]
+        public IActionResult Authenticate(string password)
+        {
+            var passwordHash = new PasswordHasher(4859);
+            var temp = passwordHash.Hash(password);
+            return Ok(temp);
+        }
 
 
     }

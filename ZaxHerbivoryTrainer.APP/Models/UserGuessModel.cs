@@ -21,9 +21,18 @@ namespace ZaxHerbivoryTrainer.APP.Models
 
         [JsonProperty(PropertyName = "ImageId")]
         public int ImageId { get; set; }
-
+        [JsonProperty(PropertyName = "Phase")]
+        public Phase Phase { set; get; }
         [JsonProperty(PropertyName = "Image")]
         public virtual ImageModel Image { set; get; }
+
         //public virtual User User { set; get; }
+    }
+
+    public enum Phase:byte
+    {
+        ONE =0,
+        TWO= 1,
+        THREE =2
     }
 }

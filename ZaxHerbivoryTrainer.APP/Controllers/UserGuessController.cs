@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -44,7 +45,85 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         /// </summary>
         /// <param name="userGuid">Can be null if so new user is created</param>
         /// <returns></returns>
-        public async Task<ActionResult> Guess(string userGuid)
+        public async Task<ActionResult> GuessNoFeedback(string userGuid, byte? phase = 0)
+        {
+            if (_session._isLoggedin)
+            {
+                //create if no guid
+                var getUserRequest = new HttpRequestMessage(HttpMethod.Post, "/api/user");
+
+                //Get if exists
+                if (!string.IsNullOrEmpty(userGuid) && new Guid(userGuid) != Guid.Empty)
+                    getUserRequest = new HttpRequestMessage(HttpMethod.Get, string.Format("/api/user/hash/{0}", userGuid));
+
+                var getUserResponse = await _db.BuildApiResponse<UserModel>(getUserRequest, _session._accessToken);
+
+                GuessViewModel model = new GuessViewModel();
+                if (getUserResponse.Status == HttpStatusCode.OK)
+                {
+                    model.UserHash = getUserResponse.Content.HashUser.Value;
+                    model.UserId = getUserResponse.Content.UserId;
+
+                    //returning details
+                    model.ReturningUser = (getUserResponse.Content.Guesses != null && getUserResponse.Content.Guesses.Any());
+                    model.ReturningTimer = (getUserResponse.Content.TimePhase1.HasValue)
+                        ? ((getUserResponse.Content.TimePhase1.Value.Hour * 3600) +
+                           (getUserResponse.Content.TimePhase1.Value.Minute * 60) + (getUserResponse.Content.TimePhase1.Value.Second))
+                        : 0;
+                    
+                    //Login logging
+                    var updateLoginTokenRequest = new HttpRequestMessage(HttpMethod.Post, string.Format("/api/token/{0}/{1}", _session._accessId, model.UserHash.ToString())); 
+                    var updateLoginTokenResponse = await _db.BuildApiResponse<Token>(updateLoginTokenRequest, _session._accessToken);
+
+                    //Past guesses
+                    var usersGuessRequest = new HttpRequestMessage(HttpMethod.Get,
+                        string.Format("/api/usersGuess/{0}/{1}", getUserResponse.Content.UserId,phase));
+                    var usersGuessResponse = await _db.BuildApiResponse<List<UserGuessModel>>(usersGuessRequest, _session._accessToken);
+
+
+                    model.FinalPercentage = getUserResponse.Content.Guesses != null && getUserResponse.Content.Guesses.Any() && usersGuessResponse.Content.Count >= 10
+                        ? (decimal)Calculations.FindAverageDifferenceOfList(usersGuessResponse.Content.OrderBy(x => x.UsersGuessId).Skip(usersGuessResponse.Content.Count - 10).ToList())
+                        : (decimal)0.0;
+
+
+                    model.ImagesUsed = usersGuessResponse.Content.Count;
+                    model.Phase = (byte) (phase.HasValue ? phase.Value : 0);
+
+                    //Get random new image that hasn't been used
+                    var binding = new RandomImageBinding
+                    {
+                        PreviousImageIds = getUserResponse.Content.Guesses != null && getUserResponse.Content.Guesses.Any()
+                            ? getUserResponse.Content.Guesses.Select(x => x.ImageId).ToArray()
+                            : new int[0],
+                        ReturnRandom = true
+                    };
+                    var image = await GetRandomImage(binding);
+
+                    
+                    if (image != null)
+                    {
+                        model.CurrentCloudinaryUrl = Common.BuildCloudinaryUrl(image.FileName);
+                        model.CurrentImageId = image.ImageId;
+
+                        return View(model);
+                    }
+                }
+
+                return RedirectToAction("Errorpage", "Home");
+            }
+
+            return RedirectToAction("Login", "Account");
+        }
+        
+        /// <summary>
+        /// Init Guess set up
+        /// Get user details or creat them
+        /// Old guesses
+        /// New image
+        /// </summary>
+        /// <param name="userGuid">Can be null if so new user is created</param>
+        /// <returns></returns>
+        public async Task<ActionResult> GuessWithFeedback(string userGuid)
         {
             if (_session._isLoggedin)
             {
@@ -63,12 +142,13 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                     model.UserHash = getUserResponse.Content.HashUser.Value;
                     model.UserId = getUserResponse.Content.UserId;
                     model.Timer = 0;
+                    model.Phase = (byte)Phase.TWO;
 
                     //returning details
                     model.ReturningUser = (getUserResponse.Content.Guesses != null && getUserResponse.Content.Guesses.Any());
-                    model.ReturningTimer = (getUserResponse.Content.Time.HasValue)
-                        ? ((getUserResponse.Content.Time.Value.Hour * 3600) +
-                           (getUserResponse.Content.Time.Value.Minute * 60) + (getUserResponse.Content.Time.Value.Second))
+                    model.ReturningTimer = (getUserResponse.Content.TimePhase2.HasValue)
+                        ? ((getUserResponse.Content.TimePhase2.Value.Hour * 3600) +
+                           (getUserResponse.Content.TimePhase2.Value.Minute * 60) + (getUserResponse.Content.TimePhase2.Value.Second))
                         : 0;
                     
                     //Login logging
@@ -77,11 +157,11 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
 
                     //Past guesses
                     var usersGuessRequest = new HttpRequestMessage(HttpMethod.Get,
-                        string.Format("/api/usersGuess/{0}", getUserResponse.Content.UserId));
+                        string.Format("/api/usersGuess/{0}/{1}", getUserResponse.Content.UserId,1));
                     var usersGuessResponse = await _db.BuildApiResponse<List<UserGuessModel>>(usersGuessRequest, _session._accessToken);
 
                     model.FinalPercentage = getUserResponse.Content.Guesses != null && getUserResponse.Content.Guesses.Any() && usersGuessResponse.Content.Count >= 10
-                        ? (decimal) FindDifference(usersGuessResponse.Content.OrderBy(x => x.UsersGuessId).Skip(usersGuessResponse.Content.Count - 10).ToList())
+                        ? (decimal)Calculations.FindAverageDifferenceOfList(usersGuessResponse.Content.OrderBy(x => x.UsersGuessId).Skip(usersGuessResponse.Content.Count - 10).ToList())
                         : (decimal) 0.0;
 
                     model.ImagesUsed = usersGuessResponse.Content.Count;
@@ -121,7 +201,7 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<JsonResult> GuessCheck(int imageId, decimal guessPercent, int userId,
-            int currentTime)
+            int currentTime, int phase)
         {
 
             var getImageRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/image/{imageId}");
@@ -146,7 +226,8 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                 {
                     GuessPercentage = (guessPercent / 100),
                     UserId = userId,
-                    ImageId = imageId
+                    ImageId = imageId,
+                    Phase = phase
                 };
 
                 var postGuessRequest = new HttpRequestMessage(HttpMethod.Post, "/api/usersGuess")
@@ -157,18 +238,26 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                 if (postGuessResponse.Status == HttpStatusCode.OK)
                 {
                     //get users guesses list so there isn't any cheating via JS browser methods
-                    var getUserGuessRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/usersGuess/{userId}");
+                    var getUserGuessRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/usersGuess/{userId}/{phase}");
                     var getUserGuessResponse = await _db.BuildApiResponse<List<UserGuessModel>>(getUserGuessRequest, _session._accessToken);
                     var dif = 0.0;
                     if (getUserGuessResponse.Status == HttpStatusCode.OK)
                     {
                         //find difference 
-                        if (getUserGuessResponse.Content.Count >= 10)
+                        if (getUserGuessResponse.Content.Count >= 10 && phase == (int) Phase.TWO)
                         {
                             var list = getUserGuessResponse.Content.OrderBy(x => x.UsersGuessId).Skip(getUserGuessResponse.Content.Count - 10)
                                 .ToList();
-                            dif = FindDifference(list);
+                            dif = Calculations.FindAverageDifferenceOfList(list);
                         }
+                        else if (phase == (int) Phase.ONE || phase == (int) Phase.THREE)
+                        {
+                            var list = getUserGuessResponse.Content.OrderBy(x =>
+                                    x.UsersGuessId)
+                                .ToList();
+                            dif = Calculations.FindAverageDifferenceOfList(list);
+                        }
+                        
 
                         //save data so if user exits/refreshes can come back to this point
                         var time = new TimeSpan(0, 0, currentTime);
@@ -176,7 +265,8 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                         {
                             FinishingPercent = ((decimal) dif),
                             PictureCycled = getUserGuessResponse.Content.Count,
-                            Time = DateTime.UtcNow.Date.Add(time)
+                            Time = DateTime.UtcNow.Date.Add(time),
+                            Phase = (byte)phase
                         };
 
                         var stringPayload = await Task.Run(() => JsonConvert.SerializeObject(editUserBinding));
@@ -255,7 +345,7 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> Guess(GuessViewModel model)
+        public async Task<ActionResult> GuessNoFeedback(GuessViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -266,7 +356,8 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                     FinishedUtc = DateTime.UtcNow,
                     FinishingPercent = model.FinalPercentage.Value,
                     PictureCycled = model.ImagesUsed.Value,
-                    Time = DateTime.UtcNow.Date.Add(time)
+                    Time = DateTime.UtcNow.Date.Add(time),
+                    Phase = model.Phase
                 };
                 var editUserRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/user/hash/{model.UserHash}")
                 {
@@ -274,88 +365,45 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                 };
                 var editUserResponse = await _db.BuildApiResponse<UserModel>(editUserRequest, _session._accessToken);
 
-                return RedirectToAction("Finish", "UserGuess", new {userGuid = model.UserHash});
+                if (model.Phase == 0)
+                    return RedirectToAction("GuessWithFeedback", "UserGuess",
+                        new {userGuid = model.UserHash});
+                else
+                    return RedirectToAction("Finish", "Finish", new {userGuid = model.UserHash});
             }
 
             return View(model);
         }
         /// <summary>
-        /// GETs following data to display back to user
-        /// number of images
-        /// guess minus actual answer 
-        /// average time (Time/images)
+        /// On Finish State
         /// </summary>
-        /// <param name="userGuid"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ActionResult> Finish(string userGuid)
+        [HttpPost]
+        public async Task<ActionResult> GuessWithFeedback(GuessViewModel model)
         {
-            if (_session._isLoggedin)
+            if (ModelState.IsValid)
             {
-
-                var getUserRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/user/hash/{userGuid}");
-                var getUserResponse = await _db.BuildApiResponse<UserModel>(getUserRequest, _session._accessToken);
-                if (getUserResponse.Status == HttpStatusCode.OK)
+                //save data with finish time
+                var time = new TimeSpan(0, 0, (model.ReturningTimer + model.Timer));
+                var binding = new UpdateUserBinding()
                 {
-                    var getUserGuessRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/usersGuess/{getUserResponse.Content.UserId}");
-                    var getUserGuessResponse = await _db.BuildApiResponse<List<UserGuessModel>>(getUserGuessRequest, _session._accessToken);
-                    if (getUserResponse.Status == HttpStatusCode.OK)
-                    {
-                        var imageNumberArray = new List<int>();
-                        var guessResultsArray = new List<decimal>();
-                        var time = getUserResponse.Content.Time.HasValue ? getUserResponse.Content.Time.Value : DateTime.Now.Date;
+                    FinishedUtc = DateTime.UtcNow,
+                    FinishingPercent = model.FinalPercentage.Value,
+                    PictureCycled = model.ImagesUsed.Value,
+                    Time = DateTime.UtcNow.Date.Add(time),
+                    Phase = (byte)Phase.TWO
+                };
+                var editUserRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/user/hash/{model.UserHash}")
+                {
+                    Content = new StringContent(JsonSerializer.Serialize(binding), Encoding.UTF8, "application/json")
+                };
+                var editUserResponse = await _db.BuildApiResponse<UserModel>(editUserRequest, _session._accessToken);
 
-                        //convert time into seconds
-                        var seconds = time.Second;
-                        seconds += (time.Minute * 60);
-                        seconds += (time.Hour * 3600);
-
-                        //Get GuessPercentage - Actual Answer for table
-                        int i = 1;
-                        foreach (var item in getUserGuessResponse.Content)
-                        {
-                            var result = (item.GuessPercentage - item.Image.DecayRate) * 100;
-                            guessResultsArray.Add(result);
-                            imageNumberArray.Add(i);
-                            i++;
-                        }
-
-                        //Total Time
-                        TimeSpan t = TimeSpan.FromSeconds(seconds);
-                        string totalTime = string.Format("{0:D2}:{1:D2}:{2:D2}s",
-                            t.Hours,
-                            t.Minutes,
-                            t.Seconds);
-
-                        //Average Time
-                        TimeSpan t2 = TimeSpan.FromSeconds((seconds / imageNumberArray.Count));
-                        string averageTime = string.Format("{0:D2}:{1:D2}:{2:D2}s",
-                            t2.Hours,
-                            t2.Minutes,
-                            t2.Seconds);
-
-                        var model = new FinishedModelView()
-                        {
-                            GuessResult = guessResultsArray.ToArray(),
-                            NumberOfImages = imageNumberArray.ToArray(),
-                            TotalTime = totalTime,
-                            AverageTime = averageTime
-                        };
-
-                        return View(model);
-                    }
-                }
-
-                return RedirectToAction("Errorpage", "Home");
+                return RedirectToAction("PhaseTwoFinish", "Finish", new {userGuid = model.UserHash});
             }
 
-            return RedirectToAction("Login", "Account");
-
-        }
-
-        [HttpPost]
-        public ActionResult Finish()
-        {
-            return RedirectToAction("Start", "Home");
+            return View(model);
         }
 
         #region Private Methods
@@ -379,24 +427,6 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
             return null;
         }
 
-
-        /// <summary>
-        /// returns the different for the last ten images
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        private double FindDifference(List<UserGuessModel> list)
-        {
-            var dif = 0.0;
-            foreach (var item in list)
-            {
-                var calc = (double) (item.GuessPercentage - item.Image.DecayRate);
-                dif += calc < 0 ? calc * -1 : calc;
-            }
-
-            dif = (1 - (dif / 10)) * 100;
-            return Math.Round(dif, 2);
-        }
 
 
         #endregion

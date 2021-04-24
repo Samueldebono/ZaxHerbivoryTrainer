@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ZaxHerbivoryTrainer.APP.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -67,10 +68,11 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                 {
                     if (ModelState.IsValid)
                     {
+
                         var binding = new
                         {
                             UserName = model.UserName,
-                            Password = model.Password
+                            Password = model.Password 
 
                         };
                         var request = new HttpRequestMessage(HttpMethod.Post, "/api/authenticate")
@@ -91,12 +93,21 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                                 return RedirectToAction("Start", "Home");
                             else if (_session._userRole == Session.Role.Admin)
                                 return RedirectToAction("UserGuessSearch", "Admin");
+                            else if (_session._userRole == Session.Role.ReturnGuest)
+                                return RedirectToAction("GuessWithFeedback", "UserGuess");
                         }
                         else
                         {
                             ModelState.AddModelError("CustomError", "Username or password is incorrect");
                             return View();
                         }
+
+                        //AccessTrainer
+                        if (!model.AccessResults)
+                            return RedirectToAction("Start", "Home");
+                        else
+                            return RedirectToAction("UserGuessSearch", "Admin");
+
                     }
                 }
                 else
@@ -134,6 +145,8 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         /// Manage Logoff
         /// </summary>
         /// <returns></returns>
+
+
         public ActionResult Logoff()
         {
             _session._accessToken = "";

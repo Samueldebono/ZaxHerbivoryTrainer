@@ -18,6 +18,7 @@ using System.Text.Json;
 using ZaxHerbivoryTrainer.API.Bindings;
 using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authorization;
+using ZaxHerbivoryTrainer.API.Models;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace ZaxHerbivoryTrainer.API.Controllers
@@ -107,10 +108,28 @@ namespace ZaxHerbivoryTrainer.API.Controllers
 
             if (user == null)
                 return NotFound();
-            user.FinishedUtc = binding.FinishedUtc;
-            user.Time = binding.Time;
-            user.FinishingPercent = binding.FinishingPercent;
-            user.PictureCycled = binding.PictureCycled;
+
+            switch (binding.Phase)
+            {
+                case 0:
+                    user.FinishedPhase1Utc = binding.FinishedUtc;
+                    user.TimePhase1 = binding.Time;
+                    user.FinishingPercentPhase1 = binding.FinishingPercent;
+                    user.PictureCycledPhase1 = binding.PictureCycled;
+                    break;
+                case 1:
+                    user.FinishedPhase2Utc = binding.FinishedUtc;
+                    user.TimePhase2 = binding.Time;
+                    user.FinishingPercentPhase2 = binding.FinishingPercent;
+                    user.PictureCycledPhase2 = binding.PictureCycled;
+                    break;
+                case 2:
+                    user.FinishedPhase3Utc = binding.FinishedUtc;
+                    user.TimePhase3 = binding.Time;
+                    user.FinishingPercentPhase3 = binding.FinishingPercent;
+                    user.PictureCycledPhase3 = binding.PictureCycled;
+                    break;
+            }
 
             _ZaxHerbivoryTrainerRepository.Save();
             var results = _mapper.Map<UserDto>(user);
@@ -126,14 +145,58 @@ namespace ZaxHerbivoryTrainer.API.Controllers
 
             if (user == null)
                 return NotFound();
-            user.FinishedUtc = binding.FinishedUtc;
-            user.Time = binding.Time;
-            user.FinishingPercent = binding.FinishingPercent;
-            user.PictureCycled = binding.PictureCycled;
+            switch (binding.Phase)
+            {
+                case 0:
+                    user.FinishedPhase1Utc = binding.FinishedUtc;
+                    user.TimePhase1 = binding.Time;
+                    user.FinishingPercentPhase1 = binding.FinishingPercent;
+                    user.PictureCycledPhase1 = binding.PictureCycled;
+                    break;
+                case 1:
+                    user.FinishedPhase2Utc = binding.FinishedUtc;
+                    user.TimePhase2 = binding.Time;
+                    user.FinishingPercentPhase2 = binding.FinishingPercent;
+                    user.PictureCycledPhase2 = binding.PictureCycled;
+                    break;
+                case 2:
+                    user.FinishedPhase3Utc = binding.FinishedUtc;
+                    user.TimePhase3 = binding.Time;
+                    user.FinishingPercentPhase3 = binding.FinishingPercent;
+                    user.PictureCycledPhase3 = binding.PictureCycled;
+                    break;
+            }
 
             _ZaxHerbivoryTrainerRepository.Save();
 
             var results = _mapper.Map<UserDto>(user);
+            return Ok(results);
+        }
+
+        [Authorize]
+        [HttpGet("users/emails", Name = "GetUserEmails")]
+        public IActionResult GetUserEmails()
+        {
+
+            var userEmails = _ZaxHerbivoryTrainerRepository.GetUserEmails();
+
+            if (userEmails == null)
+                return NotFound();
+         
+
+            var results = _mapper.Map<List<UserEmailDto>>(userEmails);
+            return Ok(results);
+        }
+
+        [Authorize]
+        [HttpPost("users/email", Name = "CreateUserEmails")]
+        public IActionResult CreateUserEmails([FromBody] CreateUserEmailBinding binding)
+        {
+            var email = _mapper.Map<UserEmails>(binding);
+            var userEmails = _ZaxHerbivoryTrainerRepository.CreateUserEmail(email);
+            _ZaxHerbivoryTrainerRepository.Save();
+            var results = _mapper.Map<UserEmailDto>(userEmails);
+
             return Ok(results);
         }
     }

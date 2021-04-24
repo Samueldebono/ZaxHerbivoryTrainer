@@ -12,5 +12,6 @@ namespace ZaxHerbivoryTrainer.APP.Models
 
         public string TotalTime { get; set; }
         public string AverageTime { get; set; }
+        public string UserGuid { get; set; }
     }
 }

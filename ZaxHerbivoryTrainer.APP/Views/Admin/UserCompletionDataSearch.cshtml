@@ -1,0 +1,73 @@
+﻿@model UserCompletionDataSearchModel
+
+<script>
+    var completrionData = [];
+    $(document).ready(function() {
+        //DOWNLOAD DATA
+        $('#btnDownload').click(function () {
+            download_csv(completrionData);
+        });
+
+        //INIT TABLE
+        buildTable();
+    });
+
+    //BUILD TABLE
+          function buildTable() {
+        var data = @Html.Raw(Json.Serialize(@Model.UserCompletionDataSearchResults));
+              completrionData = data;
+        var number_of_rows = data.length;
+        
+        var table_body = '<table cellpadding="0" cellspacing="0" border="0">';
+              for (var i = 0; i < number_of_rows; i++) {
+                  var number_of_guesses = data[i].GuessResult.length;
+            table_body += '<tr>';
+
+            //table_body += '<td>';
+            //table_body += data[i].GuessId;
+            //table_body += '</td>';
+            
+            table_body += '<td>';
+            table_body += data[i].UserId;
+            table_body += '</td>';
+                  for (var j = 0; j < number_of_guesses; j++){
+            table_body += '<td>';
+            table_body += data[i].GuessResult[j];
+            table_body += '</td>';
+            }
+        }
+        table_body += '</table>';
+        $('.tbl-content').html(table_body);
+    }
+</script>
+
+<div class="area">
+    <div class="navigation-wrapper">
+        <span class="navigation-home">ZAX Herbivory Trainer</span>
+    </div>
+    <section>
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>User Id</th>
+                        @for (int i = 1; i <= Model.MaxGuess; i++)
+                        {
+                            <th>Image @i</th>
+                        }
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tbl-content">
+        </div>
+        <div class="button-box">
+            <a id="btnDownload" class="myButton">
+                DOWNLOAD
+            </a>
+        </div>
+    </section>
+</div>
+
+@Html.Partial("_MenubarAdmin")

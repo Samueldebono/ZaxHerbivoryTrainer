@@ -13,10 +13,18 @@ namespace API.ZaxHerbivoryTrainer.Models
         [Required]
         public Guid? HashUser { get; set; }
         public DateTime CreatedUtc { get; set; }
-        public DateTime? FinishedUtc { get; set; }
-        public DateTime? Time { get; set; }
-        public int? PictureCycled { get; set; }
-        public decimal? FinishingPercent { get; set; }
+        public DateTime? FinishedPhase1Utc { get; set; }
+        public DateTime? FinishedPhase2Utc { get; set; }
+        public DateTime? FinishedPhase3Utc { get; set; }
+        public DateTime? TimePhase1 { get; set; }
+        public DateTime? TimePhase2 { get; set; }
+        public DateTime? TimePhase3 { get; set; }
+        public int? PictureCycledPhase1 { get; set; }
+        public int? PictureCycledPhase2 { get; set; }
+        public int? PictureCycledPhase3 { get; set; }
+        public decimal? FinishingPercentPhase1 { get; set; }
+        public decimal? FinishingPercentPhase2 { get; set; }
+        public decimal? FinishingPercentPhase3 { get; set; }
 
         public virtual ICollection<UsersGuess> Guesses { get; set; }
     }

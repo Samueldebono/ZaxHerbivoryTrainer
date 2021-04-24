@@ -14,18 +14,16 @@ namespace ZaxHerbivoryTrainer.APP.Models
         public decimal? GuessResultPercent { get; set; }
         public int Timer { get; set; }
         public int? ImagesUsed { get; set; }
+        public byte Phase { get; set; }
         public decimal? FinalPercentage  { get; set; }
         public bool ReturningUser  { get; set; }
         public int ReturningTimer  { get; set; }
 
     }
-
-
-
     public enum GuessResult : byte
     {
-        NotAnswered =0,
-        Right =1,
-        Wrong =2
+        NotAnswered = 0,
+        Right = 1,
+        Wrong = 2
     }
 }

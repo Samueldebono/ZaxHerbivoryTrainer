@@ -16,5 +16,7 @@ namespace ZaxHerbivoryTrainer.APP.Bindings
         public int PictureCycled { get; set; }
         [JsonProperty("Time")]
         public DateTime Time { get; set; }
+        [JsonProperty("Phase")]
+        public byte Phase { get; set; }
     }
 }

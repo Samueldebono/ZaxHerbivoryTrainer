@@ -1,0 +1,70 @@
+﻿@model UserEmailSearchModel
+
+<script>
+    var usersEmail = [];
+    $(document).ready(function() {
+        //DOWNLOAD DATA
+        $('#btnDownload').click(function () {
+            download_csv(usersEmail);
+        });
+
+        //INIT TABLE
+        buildTable();
+    });
+
+    //BUILD TABLE
+          function buildTable() {
+        var data = @Html.Raw(Json.Serialize(@Model.UserEmailSearchResults));
+        usersEmail = data;
+        var number_of_rows = data.length;
+        var number_of_cols = 3;
+        var table_body = '<table cellpadding="0" cellspacing="0" border="0">';
+        for (var i = 0; i < number_of_rows; i++) {
+            table_body += '<tr>';
+
+            table_body += '<td>';
+            table_body += data[i].UserEmailId;
+            table_body += '</td>';
+
+            table_body += '<td>';
+            table_body += data[i].Email;
+            table_body += '</td>';
+
+            table_body += '<td>';
+            table_body += data[i].CreatedUtc;
+            table_body += '</td>';
+
+        }
+        table_body += '</table>';
+        $('.tbl-content').html(table_body);
+    }
+</script>
+
+<div class="area">
+    <div class="navigation-wrapper">
+        <span class="navigation-home">ZAX Herbivory Trainer</span>
+    </div>
+    <section>
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Created UTC</th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tbl-content">
+        </div>
+        <div class="button-box">
+            <a id="btnDownload" class="myButton">
+                DOWNLOAD
+            </a>
+        </div>
+    </section>
+</div>
+
+@Html.Partial("_MenubarAdmin")

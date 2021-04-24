@@ -6,6 +6,7 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }
 
+
 @using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
     <div id="home">
@@ -13,21 +14,27 @@
 
             <div class="wrapper">
                 <span class="header-home">ZAX Herbivory Trainer</span>
+
             </div>
         </div>
 
         <div class="login-form">
             @Html.AntiForgeryToken()
+
+            <img class="home-logo" src="~/images/logo/Sydney_Logo_Portrait.png" />
+
+
             @Html.TextBoxFor(m => m.UserName, new { @placeholder = "username", @type = "text", @class = "user-input" })
             @Html.ValidationMessageFor(m => m.UserName, null, new { @class = "redText" })
 
-            @Html.TextBoxFor(m => m.Password, new { @placeholder = "password", @type = "password", @class = "user-input" })
-            @Html.ValidationMessageFor(m => m.Password, null, new { @class = "redText" })
-            @Html.ValidationMessage("CustomError", null, new { @class = "redText" })
+        @Html.TextBoxFor(m => m.Password, new { @placeholder = "password", @type = "password", @class = "user-input" })
+        @Html.ValidationMessageFor(m => m.Password, null, new { @class = "redText" })
+        @Html.ValidationMessage("CustomError", null, new { @class = "redText" })
 
-            <div class="g-recaptcha" data-sitekey="SITE_KEY"></div>
+
+            <div class="g-recaptcha" data-sitekey="6LejcfwUAAAAALapObtSoN5o4jeS_pl-w74n_Iar"></div>
             <div class="button-box">
-                <input type="submit" class="myButton" value="LOG IN" />
+                <input type="submit" class="myButton" value="ENTER" />
             </div>
         </div>
         <div id="Content" class="wrapper"></div>

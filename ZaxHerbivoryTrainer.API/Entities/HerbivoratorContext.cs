@@ -22,6 +22,7 @@ namespace API.ZaxHerbivoryTrainer.Entities
         {
         }
         public DbSet<User> User { get; set; }
+        public DbSet<UserEmails> UserEmails { get; set; }
         public DbSet<Image> Image { get; set; }
         public DbSet<UsersGuess> UsersGuess { get; set; }
         public DbSet<AuthUsers> AuthUsers { get; set; }

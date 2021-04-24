@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>fa1692f6-37ee-40bd-a0bd-413e9a064d43</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -170,6 +171,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\Phase\" />
   </ItemGroup>
 
 

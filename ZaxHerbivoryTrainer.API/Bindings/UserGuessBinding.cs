@@ -11,5 +11,6 @@ namespace ZaxHerbivoryTrainer.API.Bindings
         public decimal GuessPercentage { get; set; }
         public int UserId { get; set; }
         public int ImageId { get; set; }
+        public byte Phase { get; set; }
     }
 }

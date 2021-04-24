@@ -50,7 +50,8 @@ namespace ZaxHerbivoryTrainer.API.Controllers
             {
                 GuessPercentage = binding.GuessPercentage,
                 ImageId = binding.ImageId,
-                UserId = binding.UserId
+                UserId = binding.UserId,
+                Phase = binding.Phase
             };
 
             var newUserGuess = _ZaxHerbivoryTrainerRepository.CreateUserGuess(userGuess);
@@ -59,12 +60,14 @@ namespace ZaxHerbivoryTrainer.API.Controllers
             return Ok(newUserGuess);
         }
         [Authorize]
-        [HttpGet("usersGuess/{id}")]
-        public IActionResult GetUserGuess(int id)
+        [HttpGet("usersGuess/{id}/{phase?}")]
+        public IActionResult GetUserGuess(int id, byte? phase)
         {
 
             var userGuesses = _ZaxHerbivoryTrainerRepository.GetUserGuesses();
             var result = userGuesses.Where(x => x.UserId == id);
+            if (phase.HasValue)
+                result = result.Where(x => x.Phase == phase.Value);
 
             return Ok(result);
         }
