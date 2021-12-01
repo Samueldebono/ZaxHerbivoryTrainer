@@ -29,7 +29,7 @@
 </script>
 <script src="~/js/Guesses/phase-with-feedback-controller.js"></script>
 <script src="~/js/Guesses/answer-popup-controller.js"></script>
-<script src="~/js/Messages/PhaseOpeningMessage.js"></script>
+@*<script src="~/js/Messages/PhaseOpeningMessage.js"></script>*@
 
 @using (Html.BeginForm("GuessWithFeedback", "UserGuess", FormMethod.Post))
 {
@@ -48,7 +48,7 @@
     <div class="card">
         <img id="image_Id" src="@Model.CurrentCloudinaryUrl" alt="Avatar">
         <div class="text_container">
-            <h4>Phase @(Model.Phase + 1) - Estimate the percentage of leaf damage</h4>
+            <h4>@*Phase @(Model.Phase + 1) -*@ Estimate the percentage of leaf damage</h4>
 
             <div class="slider">
                 <input type="range"
@@ -60,7 +60,7 @@
             </div>
             <div class="button-box">
                 <button type="button" id="btnGuess" class="myButton @(Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage ||(Model.Timer > FinishedTime) ? "hide" :"")">SUBMIT</button>
-                <input id="btnGuess-finished" class="myButton @((Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage) ||(Model.Timer > FinishedTime) ? "" :"hide")" type="submit" value="See Results" />
+                <input id="btnGuess-finished" class="myButton @((Model.FinalPercentage.HasValue && Model.FinalPercentage.Value > FinishedPercentage) ||(Model.Timer > FinishedTime) ? "" :"hide")" type="submit" value="Continue" />
 
             </div>
             <div class="timer">

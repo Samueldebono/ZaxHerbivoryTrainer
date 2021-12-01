@@ -54,10 +54,10 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         {
             if (ModelState.IsValid)
             {
-                //if(model.Continue)
-                //    return RedirectToAction("Guess", "UserGuess", new { userGuid = model.Hash });
-                //else
-                    return RedirectToAction("GuessNoFeedback", "UserGuess");
+                if (model.Continue)
+                    return RedirectToAction("Guess", "UserGuess", new { userGuid = model.Hash });
+                else
+                    return RedirectToAction("GuessWithFeedback", "UserGuess");
             }
             else
             {

@@ -21,15 +21,15 @@
         <div class="login-form">
             @Html.AntiForgeryToken()
 
-            <img class="home-logo" src="~/images/logo/Sydney_Logo_Portrait.png" />
+            @*<img class="home-logo" src="~/images/logo/Sydney_Logo_Portrait.png" />*@
 
 
-            @Html.TextBoxFor(m => m.UserName, new { @placeholder = "username", @type = "text", @class = "user-input" })
+            @*@Html.TextBoxFor(m => m.UserName, new { @placeholder = "username", @type = "text", @class = "user-input" })
             @Html.ValidationMessageFor(m => m.UserName, null, new { @class = "redText" })
 
         @Html.TextBoxFor(m => m.Password, new { @placeholder = "password", @type = "password", @class = "user-input" })
         @Html.ValidationMessageFor(m => m.Password, null, new { @class = "redText" })
-        @Html.ValidationMessage("CustomError", null, new { @class = "redText" })
+        @Html.ValidationMessage("CustomError", null, new { @class = "redText" })*@
 
 
             <div class="g-recaptcha" data-sitekey="6LejcfwUAAAAALapObtSoN5o4jeS_pl-w74n_Iar"></div>

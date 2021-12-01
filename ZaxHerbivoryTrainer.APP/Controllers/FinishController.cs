@@ -103,7 +103,7 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         [HttpPost]
         public ActionResult FinishPhase2(FinishedModelView model)
         {
-            return RedirectToAction("GuessNoFeedback", "UserGuess", new { model.UserGuid, phase = 2 });
+            return RedirectToAction("GuessWithFeedback", "UserGuess", new { model.UserGuid, phase = 2 });
         }
 
         /// <summary>
@@ -168,19 +168,19 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                             i++;
                         }
 
-                        ////Total Time
-                        //TimeSpan t = TimeSpan.FromSeconds(seconds);
-                        //string totalTime = string.Format("{0:D2}:{1:D2}:{2:D2}s",
-                        //    t.Hours,
-                        //    t.Minutes,
-                        //    t.Seconds);
+                        //Total Time
+                        TimeSpan t = TimeSpan.FromSeconds(seconds);
+                        string totalTime = string.Format("{0:D2}:{1:D2}:{2:D2}s",
+                            t.Hours,
+                            t.Minutes,
+                            t.Seconds);
 
-                        ////Average Time
-                        //TimeSpan t2 = TimeSpan.FromSeconds((seconds / imageNumberArrayP2.Count));
-                        //string averageTime = string.Format("{0:D2}:{1:D2}:{2:D2}s",
-                        //    t2.Hours,
-                        //    t2.Minutes,
-                        //    t2.Seconds);
+                        //Average Time
+                        TimeSpan t2 = TimeSpan.FromSeconds((seconds / imageNumberArrayP2.Count));
+                        string averageTime = string.Format("{0:D2}:{1:D2}:{2:D2}s",
+                            t2.Hours,
+                            t2.Minutes,
+                            t2.Seconds);
 
                         var model = new CompletedModelView()
                         {
@@ -190,8 +190,8 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                             NumberOfImagesPhase1 = imageNumberArrayP1.ToArray(),
                             NumberOfImagesPhase2 = imageNumberArrayP2.ToArray(),
                             NumberOfImagesPhase3 = imageNumberArrayP3.ToArray(),
-                            //TotalTimePhase2 = totalTime,
-                            //AverageTimePhase2 = averageTime
+                            TotalTimePhase2 = totalTime,
+                            AverageTimePhase2 = averageTime
                         };
 
                         return View(model);

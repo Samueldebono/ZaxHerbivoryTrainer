@@ -344,36 +344,36 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult> GuessNoFeedback(GuessViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                //save data with finish time
-                var time = new TimeSpan(0, 0, (model.ReturningTimer + model.Timer));
-                var binding = new UpdateUserBinding()
-                {
-                    FinishedUtc = DateTime.UtcNow,
-                    FinishingPercent = model.FinalPercentage.Value,
-                    PictureCycled = model.ImagesUsed.Value,
-                    Time = DateTime.UtcNow.Date.Add(time),
-                    Phase = model.Phase
-                };
-                var editUserRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/user/hash/{model.UserHash}")
-                {
-                    Content = new StringContent(JsonSerializer.Serialize(binding), Encoding.UTF8, "application/json")
-                };
-                var editUserResponse = await _db.BuildApiResponse<UserModel>(editUserRequest, _session._accessToken);
+        //[HttpPost]
+        //public async Task<ActionResult> GuessNoFeedback(GuessViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //save data with finish time
+        //        var time = new TimeSpan(0, 0, (model.ReturningTimer + model.Timer));
+        //        var binding = new UpdateUserBinding()
+        //        {
+        //            FinishedUtc = DateTime.UtcNow,
+        //            FinishingPercent = model.FinalPercentage.Value,
+        //            PictureCycled = model.ImagesUsed.Value,
+        //            Time = DateTime.UtcNow.Date.Add(time),
+        //            Phase = model.Phase
+        //        };
+        //        var editUserRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/user/hash/{model.UserHash}")
+        //        {
+        //            Content = new StringContent(JsonSerializer.Serialize(binding), Encoding.UTF8, "application/json")
+        //        };
+        //        var editUserResponse = await _db.BuildApiResponse<UserModel>(editUserRequest, _session._accessToken);
 
-                if (model.Phase == 0)
-                    return RedirectToAction("GuessWithFeedback", "UserGuess",
-                        new {userGuid = model.UserHash});
-                else
-                    return RedirectToAction("Finish", "Finish", new {userGuid = model.UserHash});
-            }
+        //        if (model.Phase == 0)
+        //            return RedirectToAction("GuessWithFeedback", "UserGuess",
+        //                new {userGuid = model.UserHash});
+        //        else
+        //            return RedirectToAction("Finish", "Finish", new {userGuid = model.UserHash});
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
         /// <summary>
         /// On Finish State
         /// </summary>
@@ -400,7 +400,7 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                 };
                 var editUserResponse = await _db.BuildApiResponse<UserModel>(editUserRequest, _session._accessToken);
 
-                return RedirectToAction("PhaseTwoFinish", "Finish", new {userGuid = model.UserHash});
+                return RedirectToAction("Finish", "Finish", new {userGuid = model.UserHash});
             }
 
             return View(model);

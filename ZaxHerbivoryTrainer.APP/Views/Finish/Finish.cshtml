@@ -13,12 +13,14 @@
 
     $(document).ready(function () {
         setCookie("userHash", null);
+
+        @* no longer used - SD 2021 / 09 / 27 *@    
         //$.removeCookie('userHash', { path: '/' });
-        if ('@Session.Instance._userRole' === '@Session.Role.Guest')
+        @*if ('@Session.Instance._userRole' === '@Session.Role.Guest')
         {
             GreetingsMessage(0);
-        }
-        var optionsPhase1 = {
+        }*@
+        @*var optionsPhase1 = {
             type: 'line',
             data: {
                 labels: @Html.Raw(Json.Serialize(Model.NumberOfImagesPhase1)),
@@ -60,7 +62,7 @@
                     ]
                 }
             }
-        }
+        }*@
         
         
         var optionsPhase2 = {
@@ -70,7 +72,7 @@
                 datasets: [
                     {
 
-                        label: 'Phase 2 - Estimate MINUS herbivory',
+                        label: 'Estimate MINUS herbivory',
                         data: @Html.Raw(Json.Serialize(Model.GuessResultPhase2)),
                         borderWidth: 1,
                         backgroundColor: 'rgba(181,8,14, 0.2)',
@@ -107,7 +109,8 @@
         }
 
 
-        var optionsPhase3 = {
+        @* no longer used - SD 2021 / 09 / 27 *@    
+        @*var optionsPhase3 = {
             type: 'line',
             data: {
                 labels: @Html.Raw(Json.Serialize(Model.NumberOfImagesPhase3)),
@@ -152,18 +155,19 @@
         if ('@Model.NumberOfImagesPhase1.Any()' !== 'False') {
             var ctxPhase1 = document.getElementById('chartJSContainerPhase1').getContext('2d');
             new Chart(ctxPhase1, optionsPhase1);
-        }
-        if ('@Model.NumberOfImagesPhase2.Any()' !== 'False') {
+        }*@
+        @*if ('@Model.NumberOfImagesPhase2.Any()' !== 'False') {*@
             var ctxPhase2 = document.getElementById('chartJSContainerPhase2').getContext('2d');
-            new Chart(ctxPhase2, optionsPhase2);
-        }
-        var ctxPhase3 = document.getElementById('chartJSContainerPhase3').getContext('2d');
-        new Chart(ctxPhase3, optionsPhase3);
+        new Chart(ctxPhase2, optionsPhase2);
+        @* no longer used - SD 2021 / 09 / 27 *@    
+        //}
+        //var ctxPhase3 = document.getElementById('chartJSContainerPhase3').getContext('2d');
+        //new Chart(ctxPhase3, optionsPhase3);
     });
 </script>
 <script src="~/js/Messages/GreetingsMessage.js"></script>
 
-@using (Html.BeginForm("Finish", "UserGuess", FormMethod.Post))
+@using (Html.BeginForm("Finish", "Finish", FormMethod.Post))
 {
     <div id="Header">
         <div class="wrapper">
@@ -173,63 +177,67 @@
 
     <div class="stat-cards">
         <div class="statcard3">
-            @if (Model.NumberOfImagesPhase1.Any())
+            @*no longer used - SD 2021/09/27*@
+            @*@if (Model.NumberOfImagesPhase1.Any())
             {
                 <canvas id="chartJSContainerPhase1"></canvas>
-            }
-             @if (Model.NumberOfImagesPhase2.Any())
+            }*@
+            @if (Model.NumberOfImagesPhase2.Any())
             {
                 <canvas id="chartJSContainerPhase2"></canvas>
             }
-            <canvas id="chartJSContainerPhase3"></canvas>
+            @*no longer used - SD 2021/09/27*@
+            @*<canvas id="chartJSContainerPhase3"></canvas>*@
             <div class="center">
                 <div class="btn-1">
                     <input type="submit" class="myButton" value="Home" />
                 </div>
             </div>
         </div>
-    @if (Model.NumberOfImagesPhase1.Any())
-    {
-        <div class="statcard2">
 
-            <p class="content-norm"> Please enter your email address here and we will send you a $20 Woolworths online gift card within 48 hours.
-            <p>
+        @*@if (Model.NumberOfImagesPhase1.Any())
+        {
+            <div class="statcard2">
 
-            @Html.TextBoxFor(m => m.Email)
-            <div class="center">
-                <div class="btn-1">
-                    <input type="submit" class="myButton" value="Home"/>
-                </div>
-                <div class="btn-2" type="submit">
-                    <input type="submit" value="Save Email"/>
-                </div>
+                <p class="content-norm"> Please enter your email address here and we will send you a $20 Woolworths online gift card within 48 hours.
+                <p>
+
+                    @Html.TextBoxFor(m => m.Email)
+                    <div class="center">
+                        <div class="btn-1">
+                            <input type="submit" class="myButton" value="Home" />
+                        </div>
+                        <div class="btn-2" type="submit">
+                            <input type="submit" value="Save Email" />
+                        </div>
+                    </div>
             </div>
-        </div>
-    }
-    else
-    {
-        <div class="statcard2">
+        }
+        else
+        {*@
+            <div class="statcard2">
 
-            <p class="content-norm"> Thank you<p>
+                <p class="content-norm"> Thank you<p>
 
-            <div class="center">
-                <div class="btn-1">
-                    <input type="submit" class="myButton" value="Home"/>
-                </div>
+                    <div class="center">
+                        <div class="btn-1">
+                            <input type="submit" class="myButton" value="Home" />
+                        </div>
+                    </div>
             </div>
-        </div>
-    }
-        @*<div class="statcard2">
+        @*}*@
+
+        <div class="statcard2">
             <img src="~/images/timer.png" class="icon">
             <p class="heading">Total time</p>
-            <p class="content">@Model.TotalTime</p>
+            <p class="content">@Model.TotalTimePhase2</p>
         </div>
 
         <div class="statcard2">
             <img src="~/images/accuracy.png" class="icon" />
             <p class="heading">Average time per image</p>
-            <p class="content">@Model.AverageTime</p>
-        </div>*@
+            <p class="content">@Model.AverageTimePhase2</p>
+        </div>
 
     </div>
     <div id="Content" class="wrapper">

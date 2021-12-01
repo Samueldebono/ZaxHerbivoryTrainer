@@ -15,9 +15,9 @@
         window.location.href = '@Url.Action("GuessWithFeedback", "UserGuess")';
     }
 
-    function PhaseThree() {
+    @*function PhaseThree() {
         window.location.href = '@Url.Action("GuessNoFeedback", "UserGuess", new {phase = (byte) @Phase.THREE})';
-    }
+    }*@
 
 </script>
 
@@ -37,7 +37,7 @@
                 </a>
             </li>
         </ul>
-        <ul>
+        @*<ul>
             <li>
                 <a onclick="PhaseThree();">
                     <img src="~/images/three.png" class="fa">
@@ -46,7 +46,7 @@
                     </span>
                 </a>
             </li>
-        </ul>
+        </ul>*@
     }
 
     <ul class="logout">

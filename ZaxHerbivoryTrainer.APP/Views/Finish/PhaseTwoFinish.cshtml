@@ -63,7 +63,7 @@
         new Chart(ctx, options);
     });
 </script>
-@using (Html.BeginForm("FinishPhase2", "UserGuess", FormMethod.Post))
+@using (Html.BeginForm("FinishPhase2", "Finish", FormMethod.Post))
 {
 
 
@@ -71,7 +71,7 @@
 
     <div id="Header">
         <div class="wrapper">
-            <span class="header-home">Congratulations</span>
+            <span class="header-home">Phase 2</span>
         </div>
     </div>
 
@@ -80,7 +80,7 @@
             <canvas id="chartJSContainer"></canvas>
             <div class="center">
                 <div class="btn-1">
-                    <input type="submit" class="myButton" value="Next Phase" />
+                    <input type="submit" class="myButton" value="Continue" />
                 </div>
             </div>
         </div>

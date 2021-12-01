@@ -541,6 +541,7 @@ p.timer-text {
 
 img.timer-icon {
     width: 22px;
+    min-height: auto !important;
     vertical-align: middle;
     padding-bottom: 9px;
     padding-right: 4px;

@@ -66,49 +66,49 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                 if (apiJson.success == Boolean.TrueString)
                 //if (true)
                 {
-                    if (ModelState.IsValid)
+                    //if (ModelState.IsValid)
+                    //{
+
+                    var binding = new
                     {
+                        UserName = "Guest",//model.UserName,
+                        Password = "2021Participant!"//model.Password 
+                    };
 
-                        var binding = new
-                        {
-                            UserName = model.UserName,
-                            Password = model.Password 
+                    var request = new HttpRequestMessage(HttpMethod.Post, "/api/authenticate")
+                    {
+                        Content = new StringContent(JsonSerializer.Serialize(binding), Encoding.UTF8,
+                            "application/json")
+                    };
+                    var authResponse = await _db.BuildApiResponse<AuthenticateModel>(request);
+                    if (authResponse.Status == HttpStatusCode.OK)
+                    {
+                        _session._accessToken = authResponse.Content.BearerToken;
+                        _session._userRole = (Session.Role)authResponse.Content.RoleType;
+                        _session._isLoggedin = true;
+                        _session._expiryDate = authResponse.Content.ExpiryDate;
+                        _session._accessId = authResponse.Content.AccessId;
 
-                        };
-                        var request = new HttpRequestMessage(HttpMethod.Post, "/api/authenticate")
-                        {
-                            Content = new StringContent(JsonSerializer.Serialize(binding), Encoding.UTF8,
-                                "application/json")
-                        };
-                        var authResponse = await _db.BuildApiResponse<AuthenticateModel>(request);
-                        if (authResponse.Status == HttpStatusCode.OK)
-                        {
-                            _session._accessToken = authResponse.Content.BearerToken;
-                            _session._userRole = (Session.Role) authResponse.Content.RoleType;
-                            _session._isLoggedin = true;
-                            _session._expiryDate = authResponse.Content.ExpiryDate;
-                            _session._accessId = authResponse.Content.AccessId;
-
-                            if (_session._userRole == Session.Role.Guest)
-                                return RedirectToAction("Start", "Home");
-                            else if (_session._userRole == Session.Role.Admin)
-                                return RedirectToAction("UserGuessSearch", "Admin");
-                            else if (_session._userRole == Session.Role.ReturnGuest)
-                                return RedirectToAction("GuessWithFeedback", "UserGuess");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("CustomError", "Username or password is incorrect");
-                            return View();
-                        }
-
-                        //AccessTrainer
-                        if (!model.AccessResults)
+                        if (_session._userRole == Session.Role.Guest)
                             return RedirectToAction("Start", "Home");
-                        else
+                        else if (_session._userRole == Session.Role.Admin)
                             return RedirectToAction("UserGuessSearch", "Admin");
-
+                        else if (_session._userRole == Session.Role.ReturnGuest)
+                            return RedirectToAction("GuessWithFeedback", "UserGuess");
                     }
+                    else
+                    {
+                        ModelState.AddModelError("CustomError", "Username or password is incorrect");
+                        return View();
+                    }
+
+                    //AccessTrainer
+                    if (!model.AccessResults)
+                        return RedirectToAction("Start", "Home");
+                    else
+                        return RedirectToAction("UserGuessSearch", "Admin");
+
+                    //}
                 }
                 else
                 {

@@ -55,7 +55,7 @@ namespace ZaxHerbivoryTrainer.API.Controllers
             var passwordCheck = passwordHash.Check(user.Password, model.Password);
 
             if (!passwordCheck.Verified)
-                return BadRequest( "Username or password is incorrect");
+                return BadRequest("Username or password is incorrect");
 
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -65,7 +65,7 @@ namespace ZaxHerbivoryTrainer.API.Controllers
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, model.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub,"Guest" /*model.UserName*/),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.AuthTime, AuthTime.ToString()) 
             };
@@ -120,14 +120,14 @@ namespace ZaxHerbivoryTrainer.API.Controllers
         }
 
         //If need to create new password
-        [AllowAnonymous]
-        [HttpPost("hash/authenticate")]
-        public IActionResult Authenticate(string password)
-        {
-            var passwordHash = new PasswordHasher(4859);
-            var temp = passwordHash.Hash(password);
-            return Ok(temp);
-        }
+        //[AllowAnonymous]
+        //[HttpPost("hash/authenticate")]
+        //public IActionResult Authenticate(string password)
+        //{
+        //    var passwordHash = new PasswordHasher(4859);
+        //    var temp = passwordHash.Hash(password);
+        //    return Ok(temp);
+        //}
 
 
     }
