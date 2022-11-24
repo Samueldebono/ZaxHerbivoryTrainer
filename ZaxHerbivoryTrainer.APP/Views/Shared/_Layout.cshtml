@@ -23,6 +23,54 @@
     <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/jquery-dateformat.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#btnCite").click(function() {
+                Swal.fire({
+                title: '<strong><u>How to cite</u></strong>',
+                icon: 'info',
+                html:
+                    '<div id="citeModal" class="container" >' +
+                        '<div>' +
+                        '<span>Thank you for using our app! We hope it improves your data collection and research.' +
+                        'A lot of effort has gone into creating this free resource so we would greatly appreciate you citing our accompanying open-access paper in any works where the ZAX Herbivory Trainer was used to train researchers prior to data collection.' +
+                        '</span>' +
+                        '<br/>' +
+                        '<span>' +
+                        'Cite as:' +
+                        '</span>' +
+                        '<br/>' +
+                        '<br/>' +
+                        '<span id="cite_spn">' +
+                        'Xirocostas, Z. A., Debono, S. A., Slavich, E., & Moles, A. T. (2022). The ZAX Herbivory Trainer—Free software for training researchers to visually estimate leaf damage. Methods in Ecology and Evolution, 13(3), 596-602. https://doi.org/10.1111/2041-210X.13785' +
+                        '</span>' +
+                        '</div>' +
+                        '<br/>' +
+                        '<br/>' +
+                        '</div>',
+                showCloseButton: true,
+                showCancelButton: true,
+                confirmButtonColor: '#2c9417',
+                focusConfirm: false,  confirmButtonText: 'Copy to Clipboard',
+                denyButtonText: 'Close'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var copyText = document.getElementById("cite_spn");
+                    var textArea = document.createElement("textarea");
+                    textArea.value = copyText.textContent;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand("Copy");
+                    textArea.remove();
+                    Swal.fire({title: 'Copied to Clipboard, Thank you', html:'', icon:'success',
+                        confirmButtonColor: '#2c9417' });
+                } else if (result.isDenied) {
+                    Swal.fire('Thank you', '', 'info');
+                }
+            });
+            });
+        });
+    </script>
 </head>
 
     <body>
@@ -32,14 +80,25 @@
             </main>
         </div>
 
-        <footer class="border-top footer text-muted">
-            <span class="footer-by">
-                Created by Zoe Xirocostas and Angela Moles | Developed by <a href="https://peglegsoftware.com.au" target="_blank">Pegleg Software</a>
-                @*<img class="footer-logo" src="~/images/logo/Sydney_Logo_Landscape_W.png" />*@
-            </span>
-
-        </footer>
+    <footer class="border-top footer text-muted">
+        <div class="row"> 
+        <span class="footer-by">
+            Created by Zoe Xirocostas and Angela Moles | Developed by <a href="https://peglegsoftware.com.au" target="_blank">Pegleg Software</a>
+            @*<img class="footer-logo" src="~/images/logo/Sydney_Logo_Landscape_W.png" />*@
+        </span>
+            <div class="citeBtn">
+                <div style="
+                            border: solid;
+                            width: 100px;
+                            padding: 5px;
+                        ">
+                    <a id="btnCite"><span style="color: white">How to cite</span></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
         @RenderSection("Scripts", required: false)
+
     </body>
 </html>

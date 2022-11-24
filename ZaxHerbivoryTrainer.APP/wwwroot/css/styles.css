@@ -159,10 +159,10 @@ a {
 }
 
     .btn-1 a,
-    .btn-1 input ,
-    .btn-2 input ,
-    .btn-2 a 
-    {
+    .btn-1 input,
+    .btn-2 input,
+    .btn-2 a
+    .citeBtn a {
         text-decoration: none;
         border: 2px solid #010100;
         padding: 15px;
@@ -172,7 +172,6 @@ a {
         position: relative;
         display: inline-block;
         cursor: pointer;
-
     }
     .btn-1 input:focus
     {
@@ -696,7 +695,8 @@ h1.header-bottom {
 
 
 .footer-by {
-    display: block;
+    width: 65%;
+    display: inline-block;
     text-align: left;
     margin: 10px;
     font-size: 15px;
@@ -1765,3 +1765,47 @@ td {
     .switch-field label:last-of-type {
         border-radius: 0 4px 4px 0;
     }
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 140px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -75px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.citeBtn {
+    display: inline-block;
+    cursor: pointer;
+}
