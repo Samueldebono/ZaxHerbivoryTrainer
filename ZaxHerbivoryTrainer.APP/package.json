@@ -8,6 +8,6 @@
     "bootstrap": "^3.3.6",
     "cloudinary-jquery-file-upload": "^2.8.2",
     "font-awesome": "^4.6.1",
-    "jquery": "^2.2.4"
+    "jquery": "^3.5.0"
   }
 }
