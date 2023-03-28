@@ -51,8 +51,7 @@ namespace ZaxHerbivoryTrainer.API
                   validationModelOptions => { validationModelOptions.MustRevalidate = true; });
             services.AddResponseCaching();
 
-            //var connection = Configuration.GetConnectionString("HerbivoratorContext");
-            var connection = Configuration.GetConnectionString("HerbivoratorContextLive");
+            var connection = Configuration.GetConnectionString("HerbivoratorContext");
             services.AddDbContext<ZaxHerbivoryTrainerContext>(options => options.UseSqlServer(connection));
 
             services.AddScoped<IZaxHerbivoryTrainerRepository, ZaxHerbivoryTrainerRepository>();
@@ -80,8 +79,7 @@ namespace ZaxHerbivoryTrainer.API
                     {
                         var problemDetails = new ValidationProblemDetails(context.ModelState)
                         {
-                            //Type = "http://localhost:44353",
-                            Type = "https://ZaxHerbivoryTrainer.com/modelvalidationproblem",
+                            Type = "http://localhost:44353",
                             Title = "One or more model validation errors occurred.",
                             Status = StatusCodes.Status422UnprocessableEntity,
                             Detail = "See the errors property for details.",

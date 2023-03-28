@@ -46,34 +46,13 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model)
         {
-            string recaptchaResponse = this.Request.Form["g-recaptcha-response"];
             var client = _httpClientFactory.CreateClient();
             try
             {
-                var parameters = new Dictionary<string, string>
-                {
-                    {"secret", _config.Value.RecaptchaSecret},
-                    {"response", recaptchaResponse},
-                    {"remoteip", this.HttpContext.Connection.RemoteIpAddress.ToString()}
-                };
-
-                HttpResponseMessage response = await client.PostAsync("https://www.google.com/recaptcha/api/siteverify",
-                    new FormUrlEncodedContent(parameters));
-                response.EnsureSuccessStatusCode();
-
-                string apiResponse = await response.Content.ReadAsStringAsync();
-                dynamic apiJson = JObject.Parse(apiResponse);
-                if (apiJson.success == Boolean.TrueString)
-                //if (true)
-                {
-                    //if (ModelState.IsValid)
-                    //{
-
-                    var binding = new
+                var binding = new
                     {
-                        UserName = "Guest",//model.UserName,
-                        Password = "2021Participant!"//model.Password 
-                    };
+                        UserName = "Guest",
+                        Password = "2021Participant!"                    };
 
                     var request = new HttpRequestMessage(HttpMethod.Post, "/api/authenticate")
                     {
@@ -108,14 +87,6 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                     else
                         return RedirectToAction("UserGuessSearch", "Admin");
 
-                    //}
-                }
-                else
-                {
-
-                    ModelState.AddModelError("CustomError", "Make sure the reCAPTCHA is ticked");
-                    return View();
-                }
             }
             catch (Exception)
             {
@@ -125,7 +96,6 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
 
             ModelState.AddModelError("CustomError", "Please contact support");
             return View();
-
         }
 
         /// <summary>

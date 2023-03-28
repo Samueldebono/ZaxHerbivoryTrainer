@@ -41,3 +41,5 @@ bin
 
 # json-server db
 db.json
+/ZaxHerbivoryTrainer.API/appsettings.json
+/ZaxHerbivoryTrainer.APP/appsettings.json
