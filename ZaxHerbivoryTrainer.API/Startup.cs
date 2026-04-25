@@ -39,7 +39,11 @@ namespace ZaxHerbivoryTrainer.API
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder=>builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials().Build());
+                options.AddPolicy("CorsPolicy", builder =>
+                    builder.SetIsOriginAllowed(_ => true)
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowCredentials());
                 
             });
             
@@ -153,7 +157,7 @@ namespace ZaxHerbivoryTrainer.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V2");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V2");
                     c.RoutePrefix = string.Empty;
                 });
 
@@ -171,13 +175,6 @@ namespace ZaxHerbivoryTrainer.API
                     }
                     );
                 });
-
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V2");
-                    c.RoutePrefix = string.Empty;
-                });
             }
 
 
@@ -185,6 +182,8 @@ namespace ZaxHerbivoryTrainer.API
             app.UseResponseCaching();
 
             app.UseHttpCacheHeaders();
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
             app.UseAuthentication();

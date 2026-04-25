@@ -7,7 +7,6 @@ using ZaxHerbivoryTrainer.APP.App_Start;
 using ZaxHerbivoryTrainer.APP.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,8 +34,8 @@ namespace ZaxHerbivoryTrainer.APP
 
             services.AddHttpClient("APIClient", client =>
             {
-                //client.BaseAddress = new Uri("https://localhost:44388/");
-                client.BaseAddress = new Uri("https://api.zaxherbivorytrainer.com/");
+                client.BaseAddress = new Uri("https://localhost:44388/");
+                //client.BaseAddress = new Uri("https://api.zaxherbivorytrainer.com/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
