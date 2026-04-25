@@ -184,6 +184,7 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
                         model.GuessResultPercent = 0;
 
                         return View(model);
+
                     }
                 }
 
@@ -414,7 +415,7 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         /// <returns></returns>
         private async Task<ImageModel> GetRandomImage(RandomImageBinding binding)
         {
-            var imageRequest = new HttpRequestMessage(HttpMethod.Get, "/api/image")
+            var imageRequest = new HttpRequestMessage(HttpMethod.Post, "/api/image")
             {
                 Content = new StringContent(JsonSerializer.Serialize(binding), Encoding.UTF8, "application/json")
             };

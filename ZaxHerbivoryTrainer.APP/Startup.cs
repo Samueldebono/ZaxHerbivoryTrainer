@@ -22,7 +22,6 @@ namespace ZaxHerbivoryTrainer.APP
     {
         public Startup(IConfiguration configuration)
         {
-
             Configuration = configuration;
         }
 
@@ -36,20 +35,19 @@ namespace ZaxHerbivoryTrainer.APP
 
             services.AddHttpClient("APIClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:44388/");
+                //client.BaseAddress = new Uri("https://localhost:44388/");
+                client.BaseAddress = new Uri("https://api.zaxherbivorytrainer.com/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
 
             // Add our Config object so it can be injected
             services.Configure<Config>(Configuration.GetSection("Config"));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             app.UseStaticFiles();
             if (env.IsDevelopment())
             {
@@ -62,12 +60,7 @@ namespace ZaxHerbivoryTrainer.APP
                 app.UseHsts();
             }
 
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
             app.UseHttpsRedirection();
-            //app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -79,7 +72,6 @@ namespace ZaxHerbivoryTrainer.APP
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}/{id?}");
             });
-
         }
     }
 }

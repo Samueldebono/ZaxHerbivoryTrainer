@@ -4,14 +4,16 @@ using API.ZaxHerbivoryTrainer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ZaxHerbivoryTrainer.API.Migrations
 {
     [DbContext(typeof(ZaxHerbivoryTrainerContext))]
-    partial class ZaxHerbivoryTrainerContextModelSnapshot : ModelSnapshot
+    [Migration("20230408051126_add visiterCount")]
+    partial class addvisiterCount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,24 +171,6 @@ namespace ZaxHerbivoryTrainer.API.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("AuthUsers");
-                });
-
-            modelBuilder.Entity("ZaxHerbivoryTrainer.API.Models.Logs", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("LogTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("ZaxHerbivoryTrainer.API.Models.Token", b =>

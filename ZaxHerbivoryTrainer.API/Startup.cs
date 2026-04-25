@@ -79,7 +79,7 @@ namespace ZaxHerbivoryTrainer.API
                     {
                         var problemDetails = new ValidationProblemDetails(context.ModelState)
                         {
-                            Type = "http://localhost:44353",
+                            //Type = "http://localhost:44353",
                             Title = "One or more model validation errors occurred.",
                             Status = StatusCodes.Status422UnprocessableEntity,
                             Detail = "See the errors property for details.",
@@ -153,7 +153,7 @@ namespace ZaxHerbivoryTrainer.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V1");
+                    c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V2");
                     c.RoutePrefix = string.Empty;
                 });
 
@@ -175,7 +175,7 @@ namespace ZaxHerbivoryTrainer.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V1");
+                    c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V2");
                     c.RoutePrefix = string.Empty;
                 });
             }

@@ -32,11 +32,19 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Start()
+        public async Task<ActionResult> Start()
         {
             if (_session._isLoggedin)
             {
                 StartModel model = new StartModel();
+
+                var getVisiterCountRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/visitCounter");
+                var getVisiterCountResponse = await _db.BuildApiResponse<int>(getVisiterCountRequest);
+                if (getVisiterCountResponse.Status == HttpStatusCode.OK)
+                {
+                    model.VisiterCount = getVisiterCountResponse.Content;
+                }
+
                 return View(model);
             }
             else
@@ -55,7 +63,7 @@ namespace ZaxHerbivoryTrainer.APP.Controllers
             if (ModelState.IsValid)
             {
                 if (model.Continue)
-                    return RedirectToAction("Guess", "UserGuess", new { userGuid = model.Hash });
+                    return RedirectToAction("GuessNoFeedback", "UserGuess", new { userGuid = model.Hash });
                 else
                     return RedirectToAction("GuessWithFeedback", "UserGuess");
             }

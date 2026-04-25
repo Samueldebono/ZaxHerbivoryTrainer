@@ -6,7 +6,8 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Users\Sam-Commtract\Documents\Temp Files To Delete\WebSiteAPI</_PublishTargetUrl>
-    <History>True|2021-04-20T12:14:58.5664377Z;</History>
+    <_PublishTargetUrl>C:\Users\sdebo\Publish\ZAXAPI</_PublishTargetUrl>
+    <History>True|2024-02-18T06:03:26.8953281Z;True|2024-02-18T16:38:32.6049379+11:00;True|2024-02-18T16:33:18.3286484+11:00;True|2024-02-18T16:19:11.8046089+11:00;True|2024-02-18T16:18:46.8657119+11:00;True|2024-02-18T15:40:25.8587843+11:00;True|2024-02-18T15:38:21.6029805+11:00;True|2024-02-18T15:33:11.3536223+11:00;True|2024-02-18T10:57:49.9928955+11:00;True|2024-02-18T10:37:00.8380701+11:00;True|2023-04-13T22:10:14.0410555+10:00;True|2023-04-13T21:40:30.5562399+10:00;False|2023-04-13T20:54:35.7279460+10:00;False|2023-04-13T20:53:10.4205141+10:00;True|2021-04-20T22:14:58.5664377+10:00;</History>
+    <LastFailureDetails />
   </PropertyGroup>
 </Project>

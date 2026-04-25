@@ -30,6 +30,12 @@ body {
     text-shadow: 2px 2px rgb(211, 211, 211);
     color: #8ca802;
 }
+
+.subheader-home {
+    text-align: center;
+    color: #8ca802 !important;
+}
+
 .home-logo {
     height: 150px;
     padding-bottom: 30px;
@@ -145,6 +151,7 @@ a {
     justify-content: center;
     align-items: center;
     font-size: 14px;
+    padding-top: 20px;
 }
 
 .btn-1,

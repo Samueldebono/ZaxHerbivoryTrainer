@@ -51,6 +51,10 @@ namespace ZaxHerbivoryTrainer.API.Services
         void UpdateToken(Token token);
         #endregion
 
+        VisitCounter GetUpdateVisitCount();
+
+
+        void LogItem(string message);
 
 
         bool Save();

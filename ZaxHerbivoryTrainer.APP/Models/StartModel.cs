@@ -9,5 +9,6 @@ namespace ZaxHerbivoryTrainer.APP.Models
     {
         public string Hash { get; set; }
         public bool Continue { get; set; }
+        public int VisiterCount { get; set; }
     }
 }

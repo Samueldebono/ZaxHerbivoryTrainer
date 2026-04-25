@@ -36,6 +36,9 @@ bin
 # Webstorm metadata
 .idea
 
+# Visual Studio workspace and Copilot caches
+.vs/
+
 # Mac files
 .DS_Store
 

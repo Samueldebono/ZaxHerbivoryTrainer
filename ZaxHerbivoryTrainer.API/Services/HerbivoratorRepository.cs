@@ -202,6 +202,41 @@ namespace ZaxHerbivoryTrainer.API.Services
 
         #endregion
 
+        public VisitCounter GetUpdateVisitCount()
+        {
+            var counter = _context.VisitCount.FirstOrDefault();
+            if (counter != null)
+            {
+                counter.Count += 1;
+            }
+            else
+            {
+                counter = new VisitCounter
+                {
+                    Count = 1
+                };
+                _context.VisitCount.Add(counter);
+            }
+
+            Save();
+            return counter;
+        }
+
+
+        public void LogItem(string message)
+        {
+           var log = new Logs
+            {
+
+                LogTime = DateTime.UtcNow,
+                Message = message
+            };
+            _context.Logs.Add(log);
+
+            Save();
+        }
+
+
         public bool Save()
         {
             return (_context.SaveChanges() >= 0);
@@ -213,6 +248,7 @@ namespace ZaxHerbivoryTrainer.API.Services
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
 
         protected virtual void Dispose(bool disposing)
         {

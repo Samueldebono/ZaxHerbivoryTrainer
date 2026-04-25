@@ -17,8 +17,8 @@ namespace ZaxHerbivoryTrainer.API.Controllers
     [ApiController]
     [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 10)]
     [HttpCacheValidation(MustRevalidate = true)]
-    [Produces("application/json")] 
-    public class ImageController: ControllerBase
+    [Produces("application/json")]
+    public class ImageController : ControllerBase
     {
         private readonly IZaxHerbivoryTrainerRepository _ZaxHerbivoryTrainerRepository;
         private readonly IMapper _mapper;
@@ -52,7 +52,7 @@ namespace ZaxHerbivoryTrainer.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("image")]
+        [HttpPost("image")]
         public ActionResult<List<ImageDto>> GetRandomImage(SearchImageBinding binding)
         {
             var images = _ZaxHerbivoryTrainerRepository.GetImages();
@@ -60,12 +60,17 @@ namespace ZaxHerbivoryTrainer.API.Controllers
                 return NotFound();
             if (binding.PreviousImageIds != null && binding.PreviousImageIds.Length > 0)
                 images = images.Where(x => !binding.PreviousImageIds.Contains(x.ImageId));
+
+
+
             if (binding.ReturnRandom.HasValue && binding.ReturnRandom.Value)
             {
                 Random rnd = new Random();
                 images = images.OrderBy(x => rnd.Next()).ToList();
             }
+
             var results = _mapper.Map<ImageDto>(images.FirstOrDefault());
+
             return Ok(results);
         }
 
